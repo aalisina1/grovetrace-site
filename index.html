@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grovetrace — EUDR compliance software: plot data in, accepted DDS out</title>
+<meta name="description" content="Grovetrace ingests supplier and plot data from the systems you already run, ties batches to the land they came from, and files the Due Diligence Statement in TRACES — before the 30 December 2026 EUDR deadline.">
+<meta property="og:title" content="Grovetrace — EUDR compliance software">
+<meta property="og:description" content="Plot data in, accepted DDS out. Be EUDR-ready before 30 December 2026.">
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="42" r="30" fill="%231f6b43"/><rect x="46" y="60" width="8" height="26" rx="3" fill="%23705238"/></svg>'>
+<style>
+  :root {
+    --green: #1f6b43; --green-dark: #174f32; --ink: #1c2420; --muted: #5a6660;
+    --bg: #fbfaf7; --card: #ffffff; --line: #e4e2da; --accent-bg: #eef4ef;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --green: #4caf7d; --green-dark: #6cc294; --ink: #e8ece9; --muted: #9aa69f;
+      --bg: #10150f; --card: #181f17; --line: #2a332a; --accent-bg: #1b241b;
+    }
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background: var(--bg); color: var(--ink); line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 24px; }
+  header { padding: 28px 0; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 1.25rem; letter-spacing: -0.02em; }
+  .brand svg { flex: none; }
+  .hero { padding: 56px 0 48px; }
+  .hero h1 { font-size: clamp(2rem, 5.5vw, 3.1rem); line-height: 1.12; letter-spacing: -0.03em; max-width: 21ch; }
+  .hero h1 em { font-style: normal; color: var(--green); }
+  .hero p.lede { margin: 22px 0 30px; font-size: 1.13rem; color: var(--muted); max-width: 58ch; }
+  .cta {
+    display: inline-block; background: var(--green); color: #fff; text-decoration: none;
+    padding: 13px 26px; border-radius: 8px; font-weight: 600; font-size: 1.02rem;
+  }
+  .cta:hover { background: var(--green-dark); }
+  @media (prefers-color-scheme: dark) { .cta { color: #0d130d; } }
+  .deadline {
+    margin-top: 26px; display: inline-flex; align-items: baseline; gap: 10px;
+    background: var(--accent-bg); border: 1px solid var(--line); border-radius: 8px;
+    padding: 10px 16px; font-size: 0.95rem; color: var(--muted);
+  }
+  .deadline strong { color: var(--ink); font-variant-numeric: tabular-nums; }
+  section { padding: 44px 0; border-top: 1px solid var(--line); }
+  h2 { font-size: 1.5rem; letter-spacing: -0.02em; margin-bottom: 14px; }
+  .prose p { max-width: 62ch; color: var(--muted); }
+  .prose p + p { margin-top: 12px; }
+  .prose strong { color: var(--ink); }
+  ul.what { list-style: none; margin-top: 20px; display: grid; gap: 14px; }
+  ul.what li {
+    background: var(--card); border: 1px solid var(--line); border-radius: 10px;
+    padding: 16px 18px; display: flex; gap: 14px; align-items: flex-start;
+  }
+  ul.what li .dot { flex: none; width: 10px; height: 10px; border-radius: 50%; background: var(--green); margin-top: 9px; }
+  ul.what li b { display: block; margin-bottom: 2px; }
+  ul.what li span { color: var(--muted); font-size: 0.97rem; }
+  .status {
+    margin-top: 22px; font-size: 0.95rem; color: var(--muted);
+    border-left: 3px solid var(--green); padding-left: 14px;
+  }
+  .pilot { background: var(--accent-bg); border-top: 1px solid var(--line); }
+  .pilot .inner { padding: 8px 0; }
+  .pilot p { max-width: 60ch; color: var(--muted); margin: 12px 0 24px; }
+  footer { border-top: 1px solid var(--line); padding: 30px 0 48px; font-size: 0.92rem; color: var(--muted); }
+  footer .wrap { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+  footer a { color: var(--green); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="brand">
+      <svg width="26" height="26" viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="42" r="30" fill="#1f6b43"/><rect x="46" y="60" width="8" height="26" rx="3" fill="#705238"/></svg>
+      Grovetrace
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="wrap">
+      <h1>Be EUDR-ready <em>before</em> the deadline, not during it.</h1>
+      <p class="lede">
+        From 30 December 2026, every shipment of cocoa, coffee and five other
+        commodities placed on the EU market needs a Due Diligence Statement in
+        TRACES — traced to the plot of land it came from. Grovetrace turns that
+        from a manual scramble into normal software.
+      </p>
+      <a class="cta" href="mailto:ali@grovetrace.com?subject=EUDR%20readiness%20—%20intro">Talk to the founder</a>
+      <div><span class="deadline">EUDR per-shipment DDS obligation begins&nbsp;<strong>30 Dec 2026</strong></span></div>
+    </div>
+  </div>
+
+  <section>
+    <div class="wrap prose">
+      <h2>The hard part isn't the filing</h2>
+      <p>
+        It's that supplier and plot data live in ERPs, farm-data tools,
+        co-op spreadsheets and email attachments — and they don't line up.
+        Polygons arrive late, malformed or overlapping, and it's
+        <strong>your</strong> submission that fails.
+      </p>
+      <p>
+        Grovetrace goes deep on exactly two things: <strong>getting messy
+        origin data in</strong>, and <strong>getting an accepted DDS out</strong>.
+        Not an ESG suite. Not a certification scheme. One thing, done properly.
+      </p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <h2>What Grovetrace does</h2>
+      <ul class="what">
+        <li><span class="dot"></span><div><b>Ingests your data where it lives</b><span>Supplier and plot data from the systems you already run — ERP exports, farm-data platforms, CSV. No rip-and-replace.</span></div></li>
+        <li><span class="dot"></span><div><b>Ties every batch to the land it came from</b><span>Geolocated plots (points and polygons), batch-to-plot traceability across aggregation and blending.</span></div></li>
+        <li><span class="dot"></span><div><b>Records the compliance conclusion per shipment</b><span>Deforestation-risk and legality assessment, captured with its evidence.</span></div></li>
+        <li><span class="dot"></span><div><b>Generates and submits the DDS to TRACES</b><span>The regulated output — submitted, reference stored.</span></div></li>
+        <li><span class="dot"></span><div><b>Keeps the audit trail</b><span>Five-year, per-organization evidence trail behind every submission.</span></div></li>
+      </ul>
+      <p class="status">
+        Multi-tenant platform built for smallholder tree-crop supply chains —
+        cocoa first. Running against the TRACES acceptance environment today.
+      </p>
+    </div>
+  </section>
+
+  <section class="pilot">
+    <div class="wrap inner">
+      <h2>One design-partner slot, ahead of the deadline</h2>
+      <p>
+        We're taking on a single design partner before December: a 12-week
+        pilot to get a real DDS accepted on <strong>your</strong> data — a
+        hosted private instance, founder-level support, and direct influence
+        on the roadmap. If plot-level data is still the open question in your
+        supply chain, let's talk.
+      </p>
+      <a class="cta" href="mailto:ali@grovetrace.com?subject=Design%20partner%20—%20intro">ali@grovetrace.com</a>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div>© 2026 Grovetrace · Toronto, Canada</div>
+    <div>Ali Sina Ahmadi, Founder · <a href="mailto:ali@grovetrace.com">ali@grovetrace.com</a></div>
+  </div>
+</footer>
+
+</body>
+</html>
