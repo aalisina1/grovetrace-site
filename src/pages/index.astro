@@ -1,4 +1,14 @@
 ---
 // src/pages/index.astro — replaced wholesale in Task 5.
+import Base from '../layouts/Base.astro';
+
+const title = 'Grovetrace — EUDR compliance software';
+const description =
+  'Grovetrace turns plot data into an EU Deforestation Regulation due diligence statement TRACES will accept, without spreadsheets or missed deadlines.';
 ---
-<html lang="en"><head><title>Grovetrace</title></head><body><h1>Grovetrace</h1></body></html>
+<Base title={title} description={description}>
+  <div class="wrap">
+    <h1>Grovetrace</h1>
+    <p class="prose">EUDR compliance software: plot data in, accepted DDS out.</p>
+  </div>
+</Base>

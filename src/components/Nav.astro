@@ -1,0 +1,46 @@
+---
+import { APP_URL } from '../config';
+import { buildNavLinks } from '../lib/nav';
+const links = buildNavLinks(APP_URL);
+---
+<nav class="nav">
+  <div class="wrap nav-inner">
+    <a class="brand" href="/">
+      <svg width="26" height="26" viewBox="0 0 100 100" aria-hidden="true">
+        <polygon points="50,9 82,29 71,63 29,61 18,27" fill="none"
+          stroke="currentColor" stroke-width="8" stroke-linejoin="round"/>
+        <circle cx="50" cy="9" r="7.5" fill="currentColor"/>
+        <circle cx="82" cy="29" r="7.5" fill="currentColor"/>
+        <circle cx="71" cy="63" r="7.5" fill="currentColor"/>
+        <circle cx="29" cy="61" r="7.5" fill="currentColor"/>
+        <circle cx="18" cy="27" r="7.5" fill="currentColor"/>
+        <rect x="45.75" y="63" width="8.5" height="28" rx="4" fill="currentColor"/>
+      </svg>
+      <span>Grovetrace</span>
+    </a>
+    <ul>
+      {links.map((l) => (
+        <li>
+          <a href={l.href} class={l.label === 'Book a demo' ? 'cta' : ''}>{l.label}</a>
+        </li>
+      ))}
+    </ul>
+  </div>
+</nav>
+
+<style>
+  .nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(8px);
+         background: color-mix(in srgb, var(--background) 85%, transparent);
+         border-bottom: 1px solid var(--border); }
+  .nav-inner { display: flex; align-items: center; justify-content: space-between;
+               padding-block: 14px; }
+  .brand { display: flex; align-items: center; gap: 10px; font-weight: 700;
+           font-size: 1.2rem; color: var(--primary); text-decoration: none; }
+  .brand span { color: var(--foreground); }
+  ul { display: flex; gap: 22px; list-style: none; align-items: center; }
+  a { color: var(--muted-foreground); text-decoration: none; font-size: 0.95rem; }
+  a:hover { color: var(--foreground); }
+  .cta { background: var(--primary); color: var(--primary-foreground);
+         padding: 9px 18px; border-radius: 8px; font-weight: 600; }
+  @media (max-width: 640px) { ul { gap: 14px; font-size: 0.9rem; } }
+</style>
