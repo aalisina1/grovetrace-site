@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://grovetrace.com/sitemap-index.xml
