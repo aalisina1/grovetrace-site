@@ -3,6 +3,7 @@ import '../styles/tokens.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
 import Seo from '../components/Seo.astro';
+import { jsonLdScript } from '../lib/jsonld';
 
 interface Props {
   title: string;
@@ -20,7 +21,7 @@ const { title, description, ogType = 'website', jsonLd = [] } = Astro.props;
     <link rel="preload" href="/fonts/dm-sans-400.woff2" as="font" type="font/woff2" crossorigin />
     <Seo title={title} description={description} ogType={ogType} />
     {jsonLd.map((block) => (
-      <script type="application/ld+json" set:html={JSON.stringify(block)} is:inline />
+      <script type="application/ld+json" set:html={jsonLdScript(block)} is:inline />
     ))}
     <!-- Same no-flash theme script as eudr-frontend's root layout. -->
     <script is:inline>

@@ -54,15 +54,27 @@ describe('SEO output', () => {
 describe('image assets', () => {
   // A broken explicit favicon link is worse than none: it suppresses the
   // browser's implicit /favicon.ico fallback. Both must exist in dist,
-  // not just be referenced.
+  // not just be referenced — and existsSync alone would let an empty or
+  // truncated file pass, so also check it's non-trivially sized and
+  // actually parses as SVG.
   it('ships the favicon referenced by Seo.astro', () => {
-    expect(existsSync(dist('img/favicon.svg'))).toBe(true);
+    const path = dist('img/favicon.svg');
+    expect(existsSync(path)).toBe(true);
+    const svg = readFileSync(path, 'utf8');
+    expect(svg.length).toBeGreaterThan(200);
+    expect(svg).toContain('<svg');
+    expect(svg).toContain('</svg>');
     const html = readFileSync(dist('index.html'), 'utf8');
     expect(html).toContain('<link rel="icon" href="/img/favicon.svg"');
   });
 
   it('ships the Organization logo referenced by jsonld.ts', () => {
-    expect(existsSync(dist('img/grovetrace-mark.svg'))).toBe(true);
+    const path = dist('img/grovetrace-mark.svg');
+    expect(existsSync(path)).toBe(true);
+    const svg = readFileSync(path, 'utf8');
+    expect(svg.length).toBeGreaterThan(200);
+    expect(svg).toContain('<svg');
+    expect(svg).toContain('</svg>');
   });
 
   it('ships a default OG image at 1200x630 with text actually rendered', () => {
