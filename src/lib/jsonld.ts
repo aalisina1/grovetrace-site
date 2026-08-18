@@ -28,7 +28,8 @@ export function softwareApplicationLd() {
     applicationCategory: 'BusinessApplication',
     operatingSystem: 'Web',
     description: SITE.tagline,
-    url: SITE.url,
+    // trailingSlash: 'always' — matches organizationLd().url.
+    url: `${SITE.url}/`,
   };
 }
 

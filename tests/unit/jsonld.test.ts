@@ -33,7 +33,8 @@ describe('softwareApplicationLd', () => {
     expect(ld.name).toBe('Grovetrace');
     expect(ld.applicationCategory).toBe('BusinessApplication');
     expect(ld.operatingSystem).toBe('Web');
-    expect(ld.url).toBe('https://grovetrace.com');
+    // trailingSlash: 'always' — matches organizationLd().url.
+    expect(ld.url).toBe('https://grovetrace.com/');
   });
 });
 
