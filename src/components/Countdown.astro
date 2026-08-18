@@ -8,16 +8,13 @@ const staticDate = '30 Dec 2026';
 </span>
 
 <script>
-  import { daysUntil } from '../lib/countdown';
+  import { countdownText } from '../lib/countdown';
 
   const el = document.getElementById('countdown');
-  const deadline = el?.dataset.deadline;
-  if (el && deadline) {
-    const days = daysUntil(deadline, new Date());
-    if (days > 0) {
-      el.textContent = ` — ${days} days`;
-      el.hidden = false;
-    }
+  const text = el ? countdownText(el.dataset.deadline, new Date()) : null;
+  if (el && text) {
+    el.textContent = text;
+    el.hidden = false;
   }
 </script>
 

@@ -9,8 +9,8 @@ const points = [
     body: 'Beans from many farms become one lot, one container, one shipment. Grovetrace models the join explicitly, so a filed DDS can name every plot behind a blended batch.',
   },
   {
-    title: 'Co-ops are the data layer',
-    body: 'Your supplier is often an intermediary with its own producer list, not the farmer. The supplier model is cooperative-aware, so the hierarchy survives ingestion instead of being flattened away.',
+    title: 'Co-ops sit in the middle of the chain',
+    body: 'Your supplier is usually a cooperative, not the farmer. Grovetrace records the consolidation step itself — farmer batch, co-op, exporter — so the plots behind a co-op delivery stay traceable instead of disappearing at the point of aggregation.',
   },
   {
     title: 'The systems cocoa actually runs',
@@ -40,7 +40,7 @@ const points = [
 <style>
   .cocoa { padding: 64px 0; border-top: 1px solid var(--border); }
   .intro { color: var(--muted-foreground); margin-bottom: 28px; }
-  .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); }
   .card { background: var(--card); border: 1px solid var(--border);
           border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow-card); }
   h3 { font-size: 1.05rem; margin-bottom: 8px; }
