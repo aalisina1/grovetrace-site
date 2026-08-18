@@ -1,15 +1,85 @@
 ---
-// src/pages/index.astro — replaced wholesale in Task 5.
 import Base from '../layouts/Base.astro';
-import { organizationLd } from '../lib/jsonld';
+import Hero from '../components/Hero.astro';
+import CocoaSection from '../components/CocoaSection.astro';
+import { organizationLd, softwareApplicationLd } from '../lib/jsonld';
 
-const title = 'Grovetrace — EUDR compliance software';
-const description =
-  'Grovetrace turns plot data into an EU Deforestation Regulation due diligence statement TRACES will accept, without spreadsheets or missed deadlines.';
+const what = [
+  { title: 'Ingests your data where it lives', body: 'Supplier and plot data from the systems you already run — ERP exports, farm-data platforms, CSV. No rip-and-replace.' },
+  { title: 'Ties every batch to the land it came from', body: 'Geolocated plots (points and polygons), batch-to-plot traceability across aggregation and blending.' },
+  { title: 'Records the compliance conclusion per shipment', body: 'Deforestation-risk and legality assessment, captured with its evidence.' },
+  { title: 'Generates and submits the DDS to TRACES', body: 'The regulated output — submitted, reference stored.' },
+  { title: 'Keeps the audit trail', body: 'Five-year, per-organization evidence trail behind every submission.' },
+];
 ---
-<Base title={title} description={description} jsonLd={[organizationLd()]}>
-  <div class="wrap">
-    <h1>Grovetrace</h1>
-    <p class="prose">EUDR compliance software: plot data in, accepted DDS out.</p>
-  </div>
+<Base
+  title="Grovetrace — EUDR compliance software for cocoa: plot data in, accepted DDS out"
+  description="Grovetrace ingests supplier and plot data from the systems you already run, ties every cocoa batch to the land it grew on, and files the Due Diligence Statement in TRACES — before the 30 December 2026 EUDR deadline."
+  jsonLd={[organizationLd(), softwareApplicationLd()]}
+>
+  <Hero />
+
+  <section class="band">
+    <div class="wrap prose">
+      <h2>The hard part isn’t the filing</h2>
+      <p>
+        It’s that supplier and plot data live in ERPs, farm-data tools, co-op
+        spreadsheets and email attachments — and they don’t line up. Polygons
+        arrive late, malformed or overlapping, and it’s <strong>your</strong>{' '}
+        submission that fails.
+      </p>
+      <p>
+        Grovetrace goes deep on exactly two things: <strong>getting messy origin
+        data in</strong>, and <strong>getting an accepted DDS out</strong>. Not
+        an ESG suite. Not a certification scheme. One thing, done properly.
+      </p>
+    </div>
+  </section>
+
+  <!-- Placeholder: Task 6 fills this in with the actual step-by-step content.
+       The anchor must exist now because the nav and Hero's "See how it works"
+       CTA already link to /#how-it-works. -->
+  <section class="band" id="how-it-works">
+    <div class="wrap">
+      <h2>How it works</h2>
+    </div>
+  </section>
+
+  <CocoaSection />
+
+  <section class="band" id="what">
+    <div class="wrap">
+      <h2>What Grovetrace does</h2>
+      <ul class="what">
+        {what.map((w) => (
+          <li>
+            <span class="dot"></span>
+            <div><b>{w.title}</b><span>{w.body}</span></div>
+          </li>
+        ))}
+      </ul>
+      <p class="status">
+        Multi-tenant platform built for smallholder tree-crop supply chains —
+        cocoa first. Running against the TRACES acceptance environment today.
+      </p>
+    </div>
+  </section>
 </Base>
+
+<style>
+  .band { padding: 56px 0; border-top: 1px solid var(--border); }
+  h2 { font-size: 1.6rem; margin-bottom: 14px; }
+  .prose p { color: var(--muted-foreground); }
+  .prose p + p { margin-top: 12px; }
+  .prose strong { color: var(--foreground); }
+  ul.what { list-style: none; margin-top: 20px; display: grid; gap: 14px; }
+  ul.what li { background: var(--card); border: 1px solid var(--border);
+               border-radius: var(--radius); padding: 16px 18px; display: flex;
+               gap: 14px; align-items: flex-start; box-shadow: var(--shadow-card); }
+  .dot { flex: none; width: 10px; height: 10px; border-radius: 50%;
+         background: var(--primary); margin-top: 9px; }
+  ul.what li b { display: block; margin-bottom: 2px; }
+  ul.what li span { color: var(--muted-foreground); font-size: 0.97rem; }
+  .status { margin-top: 22px; font-size: 0.95rem; color: var(--muted-foreground);
+            border-left: 3px solid var(--primary); padding-left: 14px; }
+</style>

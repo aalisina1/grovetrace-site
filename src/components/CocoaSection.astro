@@ -1,0 +1,48 @@
+---
+const points = [
+  {
+    title: 'Thousands of tiny plots',
+    body: 'Smallholder farms under 4 ha are points, not polygons, under the regulation. Ghana, Côte d’Ivoire, Ecuador, Peru, Cameroon, Nigeria — plot data arrives from co-ops in whatever shape the co-op keeps it, and it still has to reconcile.',
+  },
+  {
+    title: 'Aggregation and blending',
+    body: 'Beans from many farms become one lot, one container, one shipment. Grovetrace models the join explicitly, so a filed DDS can name every plot behind a blended batch.',
+  },
+  {
+    title: 'Co-ops are the data layer',
+    body: 'Your supplier is often an intermediary with its own producer list, not the farmer. The supplier model is cooperative-aware, so the hierarchy survives ingestion instead of being flattened away.',
+  },
+  {
+    title: 'The systems cocoa actually runs',
+    body: 'Field-data tools, ERP exports and co-op spreadsheets — ingested where they are. No rip-and-replace, because origin will not adopt your software.',
+  },
+];
+---
+<section class="cocoa">
+  <div class="wrap">
+    <h2>Built for cocoa first</h2>
+    <p class="intro prose">
+      Plenty of tools claim cocoa. The difference shows up in the parts that are
+      tedious to get right — the ones that decide whether a DDS can actually be
+      filed for a real, blended shipment.
+    </p>
+    <div class="grid">
+      {points.map((p) => (
+        <div class="card">
+          <h3>{p.title}</h3>
+          <p>{p.body}</p>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .cocoa { padding: 64px 0; border-top: 1px solid var(--border); }
+  .intro { color: var(--muted-foreground); margin-bottom: 28px; }
+  .grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+  .card { background: var(--card); border: 1px solid var(--border);
+          border-radius: var(--radius); padding: 20px 22px; box-shadow: var(--shadow-card); }
+  h3 { font-size: 1.05rem; margin-bottom: 8px; }
+  .card p { color: var(--muted-foreground); font-size: 0.97rem; }
+</style>

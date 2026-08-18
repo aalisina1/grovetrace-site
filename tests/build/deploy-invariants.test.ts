@@ -97,3 +97,25 @@ describe('image assets', () => {
     expect(html).toContain('https://grovetrace.com/img/og-default.png');
   });
 });
+
+describe('home page positioning', () => {
+  it('names cocoa in the hero lede, not just in a feature list', () => {
+    const html = readFileSync(dist('index.html'), 'utf8');
+    // [^>]* tolerates Astro's scoped-CSS data-astro-cid-* attribute, which
+    // lands right after class= on any element styled by a <style> block.
+    const lede = html.match(/<p class="lede"[^>]*>([\s\S]*?)<\/p>/);
+    expect(lede).not.toBeNull();
+    expect(lede![1].toLowerCase()).toContain('cocoa');
+  });
+
+  it('does not claim a company location in the footer', () => {
+    const html = readFileSync(dist('index.html'), 'utf8');
+    expect(html).not.toContain('Toronto');
+  });
+
+  it('ships no fabricated social proof', () => {
+    const html = readFileSync(dist('index.html'), 'utf8').toLowerCase();
+    expect(html).not.toContain('trusted by');
+    expect(html).not.toContain('our customers say');
+  });
+});
