@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Grovetrace mark v1 — "Parcel Canopy": the canopy is an EUDR land-plot
+       polygon with survey-vertex nodes, on a trunk. Brand green #1f6b43. -->
+  <polygon points="50,9 82,29 71,63 29,61 18,27" fill="none" stroke="#1f6b43" stroke-width="8" stroke-linejoin="round"/>
+  <circle cx="50" cy="9" r="7.5" fill="#1f6b43"/>
+  <circle cx="82" cy="29" r="7.5" fill="#1f6b43"/>
+  <circle cx="71" cy="63" r="7.5" fill="#1f6b43"/>
+  <circle cx="29" cy="61" r="7.5" fill="#1f6b43"/>
+  <circle cx="18" cy="27" r="7.5" fill="#1f6b43"/>
+  <rect x="45.75" y="63" width="8.5" height="28" rx="4" fill="#1f6b43"/>
+</svg>

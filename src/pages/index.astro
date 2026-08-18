@@ -1,12 +1,13 @@
 ---
 // src/pages/index.astro — replaced wholesale in Task 5.
 import Base from '../layouts/Base.astro';
+import { organizationLd } from '../lib/jsonld';
 
 const title = 'Grovetrace — EUDR compliance software';
 const description =
   'Grovetrace turns plot data into an EU Deforestation Regulation due diligence statement TRACES will accept, without spreadsheets or missed deadlines.';
 ---
-<Base title={title} description={description}>
+<Base title={title} description={description} jsonLd={[organizationLd()]}>
   <div class="wrap">
     <h1>Grovetrace</h1>
     <p class="prose">EUDR compliance software: plot data in, accepted DDS out.</p>

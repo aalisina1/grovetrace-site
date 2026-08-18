@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
+  <!-- Grovetrace mark v1, SMALL-SIZE VARIANT (≤32px: favicons, tiny UI).
+       Simplified from grovetrace-mark.svg: 3 vertex beads instead of 5,
+       stroke 12 instead of 8. Color #2e8f5b is favicon-tuned (midpoint of
+       brand #1f6b43 / dark-mode #4caf7d) so it reads on light AND dark tab
+       strips; recolor to context greens when used inside a themed page. -->
+  <polygon points="50,11 82,31 71,65 29,63 18,29" fill="none" stroke="#2e8f5b" stroke-width="12" stroke-linejoin="round"/>
+  <circle cx="50" cy="11" r="9.5" fill="#2e8f5b"/>
+  <circle cx="82" cy="31" r="9.5" fill="#2e8f5b"/>
+  <circle cx="18" cy="29" r="9.5" fill="#2e8f5b"/>
+  <rect x="44.5" y="64" width="11" height="27" rx="5" fill="#2e8f5b"/>
+</svg>
