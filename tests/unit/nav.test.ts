@@ -22,7 +22,17 @@ describe('buildNavLinks', () => {
 
   it('always offers the marketing links with trailing slashes', () => {
     const hrefs = buildNavLinks(undefined).map((l) => l.href);
-    expect(hrefs).toContain('/blog/');
+    expect(hrefs).toContain('/#how-it-works');
     expect(hrefs).toContain('/demo/');
+  });
+
+  it('omits the blog link until the blog exists', () => {
+    const labels = buildNavLinks(undefined).map((l) => l.label);
+    expect(labels).not.toContain('Blog');
+  });
+
+  it('includes the blog link once the blog ships', () => {
+    const links = buildNavLinks(undefined, true);
+    expect(links.find((l) => l.label === 'Blog')!.href).toBe('/blog/');
   });
 });

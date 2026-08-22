@@ -27,5 +27,6 @@ const ogImage = new URL('/img/og-default.png', Astro.site ?? SITE.url).href;
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={ogImage} />
 
-<link rel="alternate" type="application/rss+xml" title="Grovetrace blog" href="/rss.xml" />
+{/* RSS autodiscovery returns with the blog; a feed link that 404s is worse
+    than none, and feed readers cache the failure. */}
 <link rel="icon" href="/img/favicon.svg" type="image/svg+xml" />

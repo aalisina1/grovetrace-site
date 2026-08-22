@@ -2,6 +2,8 @@
 import Base from '../layouts/Base.astro';
 import Hero from '../components/Hero.astro';
 import CocoaSection from '../components/CocoaSection.astro';
+import HowItWorks from '../components/HowItWorks.astro';
+import DemoBooking from '../components/DemoBooking.astro';
 import { organizationLd, softwareApplicationLd } from '../lib/jsonld';
 
 const what = [
@@ -40,14 +42,7 @@ const what = [
 
   <CocoaSection />
 
-  <!-- Placeholder: Task 6 fills this in with the actual step-by-step content.
-       The anchor must exist now because the nav and Hero's "See how it works"
-       CTA already link to /#how-it-works. -->
-  <section class="band" id="how-it-works">
-    <div class="wrap">
-      <h2>How it works</h2>
-    </div>
-  </section>
+  <HowItWorks />
 
   <section class="band" id="what">
     <div class="wrap">
@@ -66,6 +61,7 @@ const what = [
       </p>
     </div>
   </section>
+  <DemoBooking />
 </Base>
 
 <style>

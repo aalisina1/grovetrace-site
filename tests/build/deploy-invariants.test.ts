@@ -119,3 +119,36 @@ describe('home page positioning', () => {
     expect(html).not.toContain('our customers say');
   });
 });
+
+describe('internal links', () => {
+  /**
+   * The nav and footer once linked /blog/ and /rss.xml while the blog was
+   * still deferred, so every page shipped two 404s. Walk every built page and
+   * resolve each internal href against dist/ — the same directory-index rule
+   * the site is deployed under (`trailingSlash: 'always'`).
+   */
+  const pages = ['index.html', 'demo/index.html', 'privacy/index.html'];
+
+  function resolves(href: string): boolean {
+    const path = href.split('#')[0].split('?')[0];
+    if (path === '' || path === '/') return existsSync(dist('index.html'));
+    const rel = path.replace(/^\//, '');
+    return (
+      existsSync(dist(rel)) ||
+      existsSync(dist(`${rel.replace(/\/$/, '')}/index.html`))
+    );
+  }
+
+  for (const page of pages) {
+    it(`has no dead internal links on /${page.replace(/index\.html$/, '')}`, () => {
+      const html = readFileSync(dist(page), 'utf8');
+      const hrefs = [...html.matchAll(/href="([^"]+)"/g)].map((m) => m[1]);
+      const internal = hrefs.filter(
+        (h) => h.startsWith('/') && !h.startsWith('//'),
+      );
+      // Guard against a vacuous pass if the regex or page ever goes empty.
+      expect(internal.length).toBeGreaterThan(0);
+      expect(internal.filter((h) => !resolves(h))).toEqual([]);
+    });
+  }
+});
