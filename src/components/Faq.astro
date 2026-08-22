@@ -1,0 +1,56 @@
+---
+import { FAQ } from '../lib/faq';
+---
+<section class="faq" id="faq">
+  <div class="wrap inner">
+    <h2>Questions people actually ask</h2>
+    <div class="items">
+      {FAQ.map((item) => (
+        <details>
+          <summary>{item.q}</summary>
+          <div class="answer">
+            {item.a.map((para) => <p set:html={para} />)}
+          </div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>
+
+<style>
+  .faq { padding: 64px 0; border-top: 1px solid var(--border); }
+  .inner { max-width: 76ch; }
+  .items { margin-top: 24px; display: grid; gap: 10px; }
+
+  details {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 4px 18px;
+  }
+  summary {
+    cursor: pointer;
+    padding: 14px 0;
+    font-weight: 500;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary::after {
+    content: '+';
+    color: var(--primary);
+    font-size: 1.3rem;
+    line-height: 1;
+    flex: none;
+  }
+  details[open] summary::after { content: '–'; }
+  summary:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
+
+  .answer { padding: 0 0 16px; color: var(--muted-foreground); }
+  .answer p + p { margin-top: 10px; }
+  .answer :global(strong) { color: var(--foreground); }
+  .answer :global(a) { color: var(--primary); }
+</style>

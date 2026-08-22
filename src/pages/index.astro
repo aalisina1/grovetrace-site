@@ -4,7 +4,9 @@ import Hero from '../components/Hero.astro';
 import CocoaSection from '../components/CocoaSection.astro';
 import HowItWorks from '../components/HowItWorks.astro';
 import DemoBooking from '../components/DemoBooking.astro';
-import { organizationLd, softwareApplicationLd } from '../lib/jsonld';
+import Faq from '../components/Faq.astro';
+import { FAQ, faqPlainText } from '../lib/faq';
+import { organizationLd, softwareApplicationLd, faqPageLd } from '../lib/jsonld';
 
 const what = [
   { title: 'Ingests your data where it lives', body: 'Supplier and plot data from the systems you already run — ERP exports, farm-data platforms, CSV. No rip-and-replace.' },
@@ -17,7 +19,11 @@ const what = [
 <Base
   title="Grovetrace — EUDR compliance software for cocoa: plot data in, accepted DDS out"
   description="Grovetrace ingests supplier and plot data from the systems you already run, ties every cocoa batch to the land it grew on, and files the Due Diligence Statement in TRACES — before the 30 December 2026 EUDR deadline."
-  jsonLd={[organizationLd(), softwareApplicationLd()]}
+  jsonLd={[
+    organizationLd(),
+    softwareApplicationLd(),
+    faqPageLd(FAQ.map((i) => ({ q: i.q, a: faqPlainText(i) }))),
+  ]}
 >
   <Hero />
 
@@ -61,6 +67,8 @@ const what = [
       </p>
     </div>
   </section>
+  <Faq />
+
   <DemoBooking />
 </Base>
 
