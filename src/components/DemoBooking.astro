@@ -1,261 +1,106 @@
 ---
-import { SITE, WEB3FORMS_KEY, CAL_LINK } from '../config';
+import { SITE, CAL_LINK } from '../config';
 
-const COMMODITIES = ['Cocoa', 'Coffee', 'Palm oil', 'Soy', 'Rubber', 'Cattle', 'Wood'];
+/**
+ * The booking step, embedded. Qualification lives in Cal.com's own booking
+ * questions rather than in a separate form, so a prospect books in one place
+ * and the answers arrive attached to the calendar invite.
+ *
+ * Only rendered on /demo/ — the home page links here rather than embedding, so
+ * a casual visitor never loads Cal's script.
+ */
+const CAL_URL = `https://cal.com/${CAL_LINK}`;
 ---
 <section class="demo" id="demo">
   <div class="wrap inner">
-    <h2>Book a demo</h2>
-    <p class="intro prose">
-      Twenty minutes, screen shared, your questions. Tell me a little about your
-      supply chain first so the call starts somewhere useful rather than with me
-      guessing.
+    <h1>Book a demo</h1>
+    <p class="lede">
+      Twenty minutes, screen shared. I'll show how supplier and plot data from
+      the systems you already run turns into a filed Due Diligence Statement —
+      and where it usually goes wrong before it gets there.
     </p>
 
-    <form
-      id="demo-form"
-      action="https://api.web3forms.com/submit"
-      method="POST"
-      novalidate
-    >
-      <input type="hidden" name="access_key" value={WEB3FORMS_KEY} />
-      <input type="hidden" name="subject" value="Grovetrace — demo request" />
-      <input type="hidden" name="from_name" value="grovetrace.com" />
-      <!--
-        Only used when JavaScript is off: the submit handler calls
-        preventDefault, so with JS the calendar is revealed in place instead.
-        Without it a no-JS visitor lands on Web3Forms' own success page with no
-        way to book — they tell us who they are and hit a dead end. Free
-        Web3Forms accounts may only redirect to the same domain.
-      -->
-      <input type="hidden" name="redirect" value={`${SITE.url}/thanks/`} />
-      <!-- Web3Forms' spam trap: bots fill it, people never see it. -->
-      <input type="checkbox" name="botcheck" class="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" />
+    <ul class="covers">
+      <li>Connecting a source and mapping it once</li>
+      <li>What the worklist tells you on a Monday morning</li>
+      <li>Plots, blending, and what survives to the statement</li>
+      <li>Your questions, which is most of it</li>
+    </ul>
 
-      <div class="row">
-        <div class="field">
-          <label for="name">Your name</label>
-          <input id="name" name="name" type="text" required autocomplete="name" />
-        </div>
-        <div class="field">
-          <label for="email">Work email</label>
-          <input id="email" name="email" type="email" required autocomplete="email" />
-        </div>
-      </div>
+    <div id="cal-inline"></div>
 
-      <div class="row">
-        <div class="field">
-          <label for="company">Company</label>
-          <input id="company" name="company" type="text" required autocomplete="organization" />
-        </div>
-        <div class="field">
-          <label for="role">Your role</label>
-          <input id="role" name="role" type="text" required autocomplete="organization-title" />
-        </div>
-      </div>
-
-      <fieldset class="field">
-        <legend>Which commodities do you place on the EU market?</legend>
-        <div class="checks">
-          {COMMODITIES.map((c) => (
-            <label class="check">
-              <input type="checkbox" name="commodities" value={c} />
-              <span>{c}</span>
-            </label>
-          ))}
-        </div>
-      </fieldset>
-
-      <div class="field">
-        <label for="volume">Roughly how much, per year? <span class="opt">Optional</span></label>
-        <input id="volume" name="volume" type="text" placeholder="e.g. 4,000 t cocoa" />
-      </div>
-
-      <div class="field">
-        <label for="question">
-          What's the open question in your supply chain right now?{' '}
-          <span class="opt">Optional</span>
-        </label>
-        <textarea id="question" name="question" rows="3"
-          placeholder="e.g. our co-ops send plot data in four formats and none of it ties to a shipment"></textarea>
-      </div>
-
-      <button type="submit">Book a demo</button>
-      <p class="privacy-note">
-        Your answers go to me by email and nowhere else. See the{' '}
-        <a href="/privacy/">privacy notice</a>.
+    <noscript>
+      <p class="fallback">
+        <a class="cta" href={CAL_URL} target="_blank" rel="noopener">
+          Open the booking page
+        </a>
       </p>
-      <p id="form-error" class="error" hidden></p>
-    </form>
+    </noscript>
 
-    <div id="cal-step" hidden>
-      <p class="booked">
-        <strong>Got it — thank you.</strong> Pick a time that suits you.
-      </p>
-      <div id="cal-inline"></div>
-      <p id="cal-fallback" class="error" hidden></p>
-    </div>
+    <p id="cal-fallback" class="fallback" hidden></p>
+
+    <p class="alt">
+      Would rather just write? Email
+      <a href={`mailto:${SITE.email}`}>{SITE.email}</a> and I'll reply the same day.
+    </p>
   </div>
 </section>
 
 <script>
   import EmbedSnippet from '@calcom/embed-snippet';
-  import { SITE, CAL_LINK } from '../config';
+  import { CAL_LINK } from '../config';
 
   const CAL_URL = `https://cal.com/${CAL_LINK}`;
+  const fallbackEl = document.getElementById('cal-fallback');
 
-  const form = document.getElementById('demo-form') as HTMLFormElement | null;
-  const calStep = document.getElementById('cal-step');
-  const calFallback = document.getElementById('cal-fallback');
-  const errorEl = document.getElementById('form-error');
+  function showFallback() {
+    if (!fallbackEl || !fallbackEl.hidden) return;
+    fallbackEl.innerHTML =
+      `The calendar didn't load — some browser extensions block it. ` +
+      `<a href="${CAL_URL}" target="_blank" rel="noopener">Open the booking page instead</a>.`;
+    fallbackEl.hidden = false;
+  }
 
-  if (form && calStep && errorEl) {
-    const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
-
-    /**
-     * A lost lead is the expensive failure, so when the form service is
-     * unreachable we hand over a mailto: carrying every answer already typed.
-     */
-    function mailtoFallback(data: FormData): string {
-      const lines: string[] = [];
-      for (const [key, value] of data.entries()) {
-        if (key === 'access_key' || key === 'botcheck' || key === 'subject' || key === 'from_name') continue;
-        if (typeof value !== 'string' || !value) continue;
-        const existing = lines.findIndex((l) => l.startsWith(`${key}: `));
-        if (existing >= 0) lines[existing] += `, ${value}`;
-        else lines.push(`${key}: ${value}`);
-      }
-      const body = encodeURIComponent(lines.join('\n'));
-      const subject = encodeURIComponent('Demo request (via grovetrace.com)');
-      return `mailto:${SITE.email}?subject=${subject}&body=${body}`;
-    }
-
-    function showCalFallback() {
-      if (!calFallback || !calFallback.hidden) return;
-      calFallback.innerHTML =
-        `We couldn't load the calendar here — some browser extensions block it. ` +
-        `<a href="${CAL_URL}" target="_blank" rel="noopener">Open the booking page instead</a>.`;
-      calFallback.hidden = false;
-    }
-
-    function revealCalendar(name: string, email: string) {
-      form!.hidden = true;
-      calStep!.hidden = false;
-
-      try {
-        const Cal = EmbedSnippet();
-        Cal('inline', { elementOrSelector: '#cal-inline', calLink: CAL_LINK });
-        Cal('ui', { hideEventTypeDetails: false, layout: 'month_view' });
-        if (name || email) Cal('prefill', { name, email });
-        // The embed script can be blocked after loading starts; if nothing has
-        // rendered shortly after, offer the plain link rather than a blank box.
-        window.setTimeout(() => {
-          const el = document.getElementById('cal-inline');
-          if (!el || el.childElementCount === 0) showCalFallback();
-        }, 4000);
-      } catch {
-        showCalFallback();
-      }
-    }
-
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      if (!form.reportValidity()) return;
-
-      errorEl!.hidden = true;
-      submitBtn.disabled = true;
-      submitBtn.textContent = 'Sending…';
-
-      const data = new FormData(form);
-      const name = String(data.get('name') ?? '');
-      const email = String(data.get('email') ?? '');
-
-      // `redirect` exists only for the no-JS native submit. Left in the fetch
-      // body, Web3Forms answers 302 instead of JSON and the cross-origin
-      // redirect is blocked by CORS, so a working submission looks to the
-      // visitor exactly like an outage.
-      data.delete('redirect');
-
-      try {
-        const res = await fetch(form.action, {
-          method: 'POST',
-          body: data,
-          headers: { Accept: 'application/json' },
-        });
-        if (!res.ok) throw new Error(`Web3Forms responded ${res.status}`);
-        const json = await res.json();
-        if (!json.success) throw new Error(json?.body?.message ?? 'Submission rejected');
-        revealCalendar(name, email);
-      } catch {
-        errorEl!.innerHTML =
-          `That didn't send — the form service may be down. ` +
-          `<a href="${mailtoFallback(data)}">Email it to me instead</a> and I'll reply the same day.`;
-        errorEl!.hidden = false;
-        submitBtn.disabled = false;
-        submitBtn.textContent = 'Book a demo';
-      }
-    });
+  try {
+    const Cal = EmbedSnippet();
+    Cal('inline', { elementOrSelector: '#cal-inline', calLink: CAL_LINK });
+    Cal('ui', { hideEventTypeDetails: false, layout: 'month_view' });
+    // The script can be blocked after loading begins; if nothing has rendered
+    // shortly after, offer the plain link rather than a blank box.
+    window.setTimeout(() => {
+      const el = document.getElementById('cal-inline');
+      if (!el || el.childElementCount === 0) showFallback();
+    }, 5000);
+  } catch {
+    showFallback();
   }
 </script>
 
 <style>
-  .demo { padding: 64px 0; border-top: 1px solid var(--border); }
-  .inner { max-width: 720px; }
-  .intro { color: var(--muted-foreground); margin-bottom: 28px; }
+  .demo { padding: 56px 0 72px; }
+  .inner { max-width: 760px; }
+  h1 { font-size: clamp(1.9rem, 4vw, 2.6rem); margin-bottom: 12px; }
+  .lede { color: var(--muted-foreground); font-size: 1.06rem; margin-bottom: 20px; }
 
-  form { display: grid; gap: 18px; }
-  /* An author `display` beats the UA [hidden] rule, so `form { display: grid }`
-     would leave a [hidden] form on screen. Restore the intent explicitly. */
+  .covers { list-style: none; margin: 0 0 28px; display: grid; gap: 7px; }
+  .covers li {
+    color: var(--muted-foreground); font-size: 0.97rem;
+    padding-left: 20px; position: relative;
+  }
+  .covers li::before {
+    content: ''; position: absolute; left: 0; top: 0.55em;
+    width: 7px; height: 7px; border-radius: 50%; background: var(--primary);
+  }
+
+  #cal-inline { min-height: 560px; }
+
   [hidden] { display: none !important; }
-  .row { display: grid; gap: 18px; grid-template-columns: 1fr 1fr; }
-  .field { display: grid; gap: 6px; }
-  fieldset.field { border: 0; padding: 0; margin: 0; }
-  legend { padding: 0; margin-bottom: 8px; font-weight: 500; }
-  label { font-weight: 500; font-size: 0.95rem; }
-  .opt { color: var(--muted-foreground); font-weight: 400; font-size: 0.85rem; }
-
-  input[type='text'], input[type='email'], textarea {
-    width: 100%;
-    font: inherit;
-    color: var(--foreground);
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 11px 13px;
+  .fallback { margin-top: 14px; color: var(--muted-foreground); font-size: 0.95rem; }
+  .fallback a { color: var(--primary); }
+  .cta {
+    display: inline-block; background: var(--primary); color: #fff !important;
+    text-decoration: none; padding: 13px 28px; border-radius: 8px; font-weight: 600;
   }
-  input:focus-visible, textarea:focus-visible {
-    outline: 2px solid var(--primary);
-    outline-offset: 1px;
-  }
-  textarea { resize: vertical; }
-
-  .checks { display: flex; flex-wrap: wrap; gap: 8px; }
-  .check {
-    display: inline-flex; align-items: center; gap: 7px;
-    border: 1px solid var(--border); border-radius: 999px;
-    padding: 7px 14px; background: var(--card); cursor: pointer;
-    font-weight: 400; font-size: 0.93rem;
-  }
-  .check:has(input:checked) { border-color: var(--primary); color: var(--primary); }
-
-  /* Off-screen rather than display:none — Web3Forms' documented honeypot. */
-  .botcheck { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
-
-  button[type='submit'] {
-    justify-self: start;
-    background: var(--primary); color: #fff; border: 0;
-    padding: 13px 28px; border-radius: 8px;
-    font: inherit; font-weight: 600; cursor: pointer;
-  }
-  button[type='submit']:disabled { opacity: 0.6; cursor: progress; }
-
-  .privacy-note { font-size: 0.86rem; color: var(--muted-foreground); margin: -4px 0 0; }
-  .privacy-note a, .error a { color: var(--primary); }
-  .error { color: #C23D3D; font-size: 0.93rem; }
-  .booked { margin-bottom: 16px; }
-  #cal-inline { min-height: 480px; }
-
-  @media (max-width: 640px) {
-    .row { grid-template-columns: 1fr; }
-  }
+  .alt { margin-top: 22px; color: var(--muted-foreground); font-size: 0.93rem; }
+  .alt a { color: var(--primary); }
 </style>

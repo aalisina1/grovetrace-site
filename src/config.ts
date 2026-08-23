@@ -17,8 +17,5 @@ export const APP_URL: string | undefined = undefined;
 /** Cal.com event link, as `user/event-type`. */
 export const CAL_LINK = 'ali-ahmadi-yp5bv1/grovetrace-demo';
 
-/** Public by design — Web3Forms access keys ship in client HTML. */
-export const WEB3FORMS_KEY = 'f6279dde-d6b0-42c3-b246-d28e3d655f41';
-
 /** EUDR application date for medium and large operators (verified 2026-08-16). */
 export const EUDR_DEADLINE = '2026-12-30';

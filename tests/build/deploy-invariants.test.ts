@@ -127,12 +127,7 @@ describe('internal links', () => {
    * resolve each internal href against dist/ — the same directory-index rule
    * the site is deployed under (`trailingSlash: 'always'`).
    */
-  const pages = [
-    'index.html',
-    'demo/index.html',
-    'privacy/index.html',
-    'thanks/index.html',
-  ];
+  const pages = ['index.html', 'demo/index.html', 'privacy/index.html'];
 
   function resolves(href: string): boolean {
     const path = href.split('#')[0].split('?')[0];
@@ -158,28 +153,27 @@ describe('internal links', () => {
   }
 });
 
-describe('post-submission page', () => {
-  it('keeps /thanks/ out of the sitemap', () => {
-    // It is a redirect destination, not a page anyone should arrive at from
-    // search — and indexing it would leak form-completion pages into results.
-    const files = ['sitemap-0.xml', 'sitemap-index.xml']
-      .filter((f) => existsSync(dist(f)))
-      .map((f) => readFileSync(dist(f), 'utf8'))
-      .join('');
-    expect(files).not.toContain('/thanks/');
-    // Negative control: the sitemap must actually list something, or the
-    // assertion above passes on an empty file.
-    expect(files).toContain('/demo/');
+describe('third-party scripts', () => {
+  it('keeps Cal.com off the home page', () => {
+    // Only /demo/ may embed the scheduler. Home-page embedding would load a
+    // third-party script for every visitor, most of whom never book.
+    const html = readFileSync(dist('index.html'), 'utf8');
+    expect(html).not.toContain('cal.com');
   });
 
-  it('marks /thanks/ noindex', () => {
-    const html = readFileSync(dist('thanks/index.html'), 'utf8');
-    expect(html).toMatch(/<meta name="robots" content="noindex/);
+  it('does embed Cal.com on the booking page', () => {
+    // Negative control for the assertion above: if the embed vanished entirely
+    // that test would still pass while the site quietly lost its booking flow.
+    const html = readFileSync(dist('demo/index.html'), 'utf8');
+    expect(html).toContain('cal.com');
   });
 
-  it('leaves the indexable pages without a noindex tag', () => {
-    for (const page of ['index.html', 'demo/index.html']) {
-      expect(readFileSync(dist(page), 'utf8')).not.toContain('noindex');
-    }
+  it('discloses the Cal.com embed in the privacy notice', () => {
+    // The page loads a third-party script on view, so saying so is not
+    // optional — and the notice previously described a form that no longer
+    // exists.
+    const html = readFileSync(dist('privacy/index.html'), 'utf8');
+    expect(html).toContain('Cal.com');
+    expect(html).not.toContain('Web3Forms');
   });
 });
