@@ -1,4 +1,5 @@
 name: Deploy to GitHub Pages
+
 on:
   push:
     branches: [main]
@@ -14,7 +15,30 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # Nothing reaches the live site without passing this first. Previously the
+  # workflow built and deployed unconditionally, so a red test — or a page that
+  # had stopped building — would have shipped.
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx astro check
+      - run: npm run test:unit
+      # Builds dist/, which the build-output assertions then read: the CNAME
+      # guard, the internal-link walk, the noindex and third-party-script rules.
+      - run: npm run test:build
+      - run: npx playwright install --with-deps chromium
+      - run: npx playwright test
+        env:
+          CI: 'true'
+
   build:
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7

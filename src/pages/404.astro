@@ -1,0 +1,57 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../config';
+
+/**
+ * GitHub Pages serves dist/404.html for any unmatched path. Without this the
+ * visitor gets GitHub's generic page — off-brand, and a dead end with no route
+ * back.
+ */
+---
+<Base
+  title="Page not found — Grovetrace"
+  description="That page does not exist. Head back to the home page, or book a demo."
+  noindex
+>
+  <section class="nf">
+    <div class="wrap inner">
+      <p class="code">404</p>
+      <h1>That page isn't here.</h1>
+      <p class="lede">
+        It may have moved, or the link may be wrong. Two places worth going
+        instead:
+      </p>
+      <div class="ctas">
+        <a class="cta" href="/">Back to the home page</a>
+        <a class="ghost" href="/demo/">Book a demo</a>
+      </div>
+      <p class="alt">
+        Looking for something specific? Email
+        <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .nf { padding: 88px 0 104px; }
+  .inner { max-width: 56ch; }
+  .code {
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.85rem; letter-spacing: 0.12em; color: var(--primary);
+    margin-bottom: 10px;
+  }
+  h1 { font-size: clamp(1.8rem, 4vw, 2.4rem); margin-bottom: 12px; }
+  .lede { color: var(--muted-foreground); margin-bottom: 26px; }
+  .ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+  .cta {
+    background: var(--primary); color: #fff; text-decoration: none;
+    padding: 12px 24px; border-radius: 8px; font-weight: 600;
+  }
+  .ghost {
+    color: var(--foreground); text-decoration: none; padding: 12px 22px;
+    border: 1px solid var(--border); border-radius: 8px; font-weight: 500;
+  }
+  .alt { margin-top: 26px; font-size: 0.93rem; color: var(--muted-foreground); }
+  .alt a { color: var(--primary); }
+</style>

@@ -177,3 +177,25 @@ describe('third-party scripts', () => {
     expect(html).not.toContain('Web3Forms');
   });
 });
+
+describe('404', () => {
+  it('emits a custom 404.html — GitHub Pages serves it for any unmatched path', () => {
+    // Without this the visitor gets GitHub's generic page: off-brand, and a
+    // dead end with no route back to the site.
+    expect(existsSync(dist('404.html'))).toBe(true);
+    const html = readFileSync(dist('404.html'), 'utf8');
+    expect(html).toContain('Grovetrace');
+    // It must offer a way onward, not just apologise.
+    expect(html).toContain('href="/demo/"');
+    expect(html).toMatch(/<meta name="robots" content="noindex/);
+  });
+
+  it('keeps 404 out of the sitemap', () => {
+    const files = ['sitemap-0.xml', 'sitemap-index.xml']
+      .filter((f) => existsSync(dist(f)))
+      .map((f) => readFileSync(dist(f), 'utf8'))
+      .join('');
+    expect(files).not.toContain('404');
+    expect(files).toContain('/demo/');
+  });
+});
