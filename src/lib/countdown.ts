@@ -25,5 +25,5 @@ export function daysUntil(deadlineIso: string, now: Date): number {
 export function countdownText(deadline: string | undefined | null, now: Date): string | null {
   if (!deadline) return null;
   const days = daysUntil(deadline, now);
-  return days > 0 ? ` — ${days} days` : null;
+  return days > 0 ? ` · ${days} days` : null;
 }

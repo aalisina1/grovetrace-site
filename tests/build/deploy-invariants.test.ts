@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { readFileSync, existsSync, statSync } from 'node:fs';
+import { readFileSync, existsSync, statSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 
 const dist = (p: string) => resolve(process.cwd(), 'dist', p);
@@ -197,5 +197,62 @@ describe('404', () => {
       .join('');
     expect(files).not.toContain('404');
     expect(files).toContain('/demo/');
+  });
+});
+
+describe('scroll motion safety', () => {
+  /**
+   * The severe failure mode for scroll-driven animation: an element parked at
+   * `opacity: 0` waiting for an animation that never runs is permanently
+   * invisible. `animation-timeline` is unsupported in Safari at time of
+   * writing, so an unguarded rule would ship a blank "How it works" section to
+   * every Mac and iPhone visitor.
+   *
+   * Every hiding rule must therefore sit inside `@supports (animation-timeline:
+   * view())`. This walks the built CSS and fails if any `opacity:0` appears
+   * outside such a block.
+   */
+  function builtCss(): string {
+    const dir = resolve(process.cwd(), 'dist', '_astro');
+    const files = readdirSync(dir).filter((f) => f.endsWith('.css'));
+    expect(files.length).toBeGreaterThan(0);
+    return files.map((f) => readFileSync(resolve(dir, f), 'utf8')).join('\n');
+  }
+
+  /** Strip every @supports(animation-timeline) block, brace-matched. */
+  function withoutTimelineSupports(css: string): string {
+    let out = '';
+    let i = 0;
+    while (i < css.length) {
+      const at = css.indexOf('@supports', i);
+      if (at === -1) { out += css.slice(i); break; }
+      const open = css.indexOf('{', at);
+      const cond = css.slice(at, open);
+      if (!/animation-timeline/.test(cond)) { out += css.slice(i, open + 1); i = open + 1; continue; }
+      out += css.slice(i, at);
+      let depth = 1, j = open + 1;
+      while (j < css.length && depth > 0) {
+        if (css[j] === '{') depth++;
+        else if (css[j] === '}') depth--;
+        j++;
+      }
+      i = j;
+    }
+    return out;
+  }
+
+  it('never hides content outside an animation-timeline @supports block', () => {
+    const css = builtCss();
+    // Negative control: the guarded rule must actually exist, or the assertion
+    // below passes simply because no motion shipped at all.
+    expect(css).toMatch(/@supports\s*\(animation-timeline/);
+    expect(css).toMatch(/opacity\s*:\s*0\b/);
+
+    const unguarded = withoutTimelineSupports(css);
+    expect(unguarded).not.toMatch(/opacity\s*:\s*0[;\}]/);
+  });
+
+  it('gates motion on prefers-reduced-motion', () => {
+    expect(builtCss()).toMatch(/prefers-reduced-motion/);
   });
 });

@@ -5,10 +5,12 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# Least privilege by default. `pages: write` and `id-token: write` are granted
+# only to the deploy job: the test job runs `npm ci` and Playwright, so it
+# executes third-party install scripts, and a compromised dependency holding an
+# OIDC token could publish to the live site.
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
   group: pages
@@ -37,9 +39,12 @@ jobs:
         env:
           CI: 'true'
 
+  # Builds and uploads the Pages artifact; uploading needs no extra grant.
   build:
     needs: test
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - uses: actions/checkout@v7
       - uses: withastro/action@v6
@@ -47,6 +52,11 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+    # The only job that touches the live site, and the only one holding the
+    # tokens to do it. It runs no project code and installs no dependencies.
+    permissions:
+      pages: write
+      id-token: write
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}

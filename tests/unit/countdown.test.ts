@@ -42,7 +42,7 @@ describe('countdownText', () => {
   });
 
   it('renders day-count text once there are days left', () => {
-    expect(countdownText('2026-12-30', new Date('2026-12-20T00:00:00Z'))).toBe(' — 10 days');
+    expect(countdownText('2026-12-30', new Date('2026-12-20T00:00:00Z'))).toBe(' · 10 days');
   });
 
   it('stays hidden (returns null) once the deadline has arrived', () => {

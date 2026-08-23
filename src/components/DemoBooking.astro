@@ -6,7 +6,7 @@ import { SITE, CAL_LINK } from '../config';
  * questions rather than in a separate form, so a prospect books in one place
  * and the answers arrive attached to the calendar invite.
  *
- * Only rendered on /demo/ — the home page links here rather than embedding, so
+ * Only rendered on /demo/. The home page links here rather than embedding, so
  * a casual visitor never loads Cal's script.
  */
 const CAL_URL = `https://cal.com/${CAL_LINK}`;
@@ -16,7 +16,7 @@ const CAL_URL = `https://cal.com/${CAL_LINK}`;
     <h1>Book a demo</h1>
     <p class="lede">
       Twenty minutes, screen shared. I'll show how supplier and plot data from
-      the systems you already run turns into a filed Due Diligence Statement —
+      the systems you already run turns into a filed Due Diligence Statement,
       and where it usually goes wrong before it gets there.
     </p>
 
@@ -56,7 +56,7 @@ const CAL_URL = `https://cal.com/${CAL_LINK}`;
   function showFallback() {
     if (!fallbackEl || !fallbackEl.hidden) return;
     fallbackEl.innerHTML =
-      `The calendar didn't load — some browser extensions block it. ` +
+      `The calendar didn't load. Some browser extensions block it. ` +
       `<a href="${CAL_URL}" target="_blank" rel="noopener">Open the booking page instead</a>.`;
     fallbackEl.hidden = false;
   }
