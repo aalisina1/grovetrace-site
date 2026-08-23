@@ -1,0 +1,21 @@
+---
+import { SITE } from '../config';
+---
+<footer>
+  <div class="wrap inner">
+    <div>© 2026 {SITE.name}</div>
+    <div class="links">
+      <a href={`mailto:${SITE.email}`}>{SITE.email}</a>
+      <a href="/demo/">Book a demo</a>
+      <a href="/privacy/">Privacy</a>
+    </div>
+  </div>
+</footer>
+<style>
+  footer { border-top: 1px solid var(--border); padding: 30px 0 48px;
+           font-size: 0.92rem; color: var(--muted-foreground); }
+  .inner { display: flex; flex-wrap: wrap; gap: 8px 24px; justify-content: space-between; }
+  .links { display: flex; flex-wrap: wrap; gap: 8px 18px; }
+  a { color: var(--primary); text-decoration: none; }
+  a:hover { text-decoration: underline; }
+</style>

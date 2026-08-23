@@ -1,0 +1,35 @@
+---
+import { SITE } from '../config';
+
+interface Props {
+  title: string;
+  description: string;
+  ogType?: string;
+  /** Post-submission pages carry no search value and should not be indexed. */
+  noindex?: boolean;
+}
+const { title, description, ogType = 'website', noindex = false } = Astro.props;
+
+const canonical = new URL(Astro.url.pathname, Astro.site ?? SITE.url).href;
+const ogImage = new URL('/img/og-default.png', Astro.site ?? SITE.url).href;
+---
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex, follow" />}
+
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:type" content={ogType} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:site_name" content={SITE.name} />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+
+{/* RSS autodiscovery returns with the blog; a feed link that 404s is worse
+    than none, and feed readers cache the failure. */}
+<link rel="icon" href="/img/favicon.svg" type="image/svg+xml" />

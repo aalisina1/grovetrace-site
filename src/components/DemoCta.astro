@@ -1,0 +1,38 @@
+---
+/**
+ * The home page's booking prompt. Deliberately a link, not the embed: putting
+ * Cal's inline widget here would load a third-party script and its cookies for
+ * every visitor to the front page, including everyone who never books.
+ */
+---
+<section class="cta-band" id="demo">
+  <div class="wrap inner">
+    <h2>See it on your own supply chain</h2>
+    <p>
+      Twenty minutes, screen shared. Bring the part of your data that worries
+      you most — thirty co-op formats, plots that will not reconcile, a blend
+      nobody can trace back. That is the useful version of this call.
+    </p>
+    <a class="cta" href="/demo/">Book a demo</a>
+    <p class="note">
+      Taking one design partner before December. Twelve weeks, and the test is
+      whether your compliance officer produces a statement that is accepted.
+    </p>
+  </div>
+</section>
+
+<style>
+  .cta-band { padding: 64px 0; border-top: 1px solid var(--border); }
+  .inner { max-width: 62ch; }
+  h2 { font-size: 1.6rem; margin-bottom: 12px; }
+  p { color: var(--muted-foreground); }
+  .cta {
+    display: inline-block; margin-top: 22px; background: var(--primary);
+    color: #fff; text-decoration: none; padding: 13px 28px;
+    border-radius: 8px; font-weight: 600;
+  }
+  .note {
+    margin-top: 18px; font-size: 0.92rem;
+    border-left: 3px solid var(--primary); padding-left: 14px;
+  }
+</style>

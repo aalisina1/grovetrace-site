@@ -1,0 +1,123 @@
+---
+import { Image } from 'astro:assets';
+import mappings from '../assets/product/import-mappings.png';
+import dashboard from '../assets/product/dashboard.png';
+import sourcing from '../assets/product/sourcing.png';
+import plot from '../assets/product/plot-detail.png';
+
+/**
+ * Real screenshots of the running product, captured against the demo dataset.
+ * Recaptured per release — see docs in the repo README.
+ */
+const steps = [
+  {
+    n: '01',
+    title: 'Connect the systems you already run',
+    body:
+      'Field-data tools, ERP exports, co-op spreadsheets, CSV. You map each source once — farmers to suppliers, plots to land plots, lots to batches — and Grovetrace keeps pulling. Origin never has to adopt your software, because nothing about their process changes.',
+    img: mappings,
+    alt: 'Grovetrace field mapping screen showing three configured FarmForce mappings: farmers to SUPPLIER, lots to BATCH, and plots to LAND_PLOT.',
+  },
+  {
+    n: '02',
+    title: 'Log in and see exactly where you stand',
+    body:
+      'One question answered on arrival: is anything about to miss customs clearance with no DDS filed? Every shipment sits in red, amber or covered, with the enforcement date counting down beside it. No report to run, no spreadsheet to reconcile.',
+    img: dashboard,
+    alt: 'Grovetrace dashboard showing a priority alert for one shipment landing in two days with no DDS filed, a red/amber/covered breakdown of all shipments, and the EUDR enforcement date 130 days out.',
+  },
+  {
+    n: '03',
+    title: 'Work one action at a time',
+    body:
+      'The action queue is ordered by what runs out of time first, one action per row — cover this shipment, review this blocked plot, file this statement. Orders that cannot move sit separately under what they are waiting for, so nothing looks urgent when it is merely stuck.',
+    img: sourcing,
+    alt: 'Grovetrace sourcing worklist listing purchase orders for cocoa with supplier, tonnage coverage bars, next deadline and stage — one row blocked because a plot failed deforestation validation.',
+  },
+  {
+    n: '04',
+    title: 'Every batch ties back to the land',
+    body:
+      'Plot geometry, the validation result behind it, and the batches it feeds — held together rather than in three systems. When a statement is challenged years later, the evidence is one click from the shipment, not a reconstruction.',
+    img: plot,
+    alt: 'Grovetrace land plot detail: a 22.5 hectare plot in Western Ghana drawn as a polygon on the map, with Global Forest Watch validation showing deforestation detected at 95% confidence.',
+  },
+];
+---
+<section class="how" id="how-it-works">
+  <div class="wrap">
+    <h2>How it works</h2>
+    <p class="intro prose">
+      The filing is a form. The hard part is everything upstream of it — which is
+      what Grovetrace is actually for.
+    </p>
+
+    {steps.map((s, i) => (
+      <div class:list={['step', i % 2 === 1 && 'flip']}>
+        <div class="copy">
+          <span class="n">{s.n}</span>
+          <h3>{s.title}</h3>
+          <p>{s.body}</p>
+        </div>
+        <figure>
+          <Image
+            src={s.img}
+            alt={s.alt}
+            widths={[640, 960, 1400]}
+            sizes="(max-width: 900px) 92vw, 620px"
+            loading={i === 0 ? 'eager' : 'lazy'}
+            fetchpriority={i === 0 ? 'high' : 'auto'}
+          />
+        </figure>
+      </div>
+    ))}
+  </div>
+</section>
+
+<style>
+  .how { padding: 64px 0; border-top: 1px solid var(--border); }
+  .intro { color: var(--muted-foreground); margin-bottom: 44px; max-width: 60ch; }
+
+  .step {
+    display: grid;
+    gap: 28px;
+    align-items: center;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+    margin-bottom: 52px;
+  }
+  .step:last-child { margin-bottom: 0; }
+  .flip .copy { order: 2; }
+  .flip figure { order: 1; }
+
+  .n {
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    color: var(--primary);
+  }
+  h3 { font-size: 1.25rem; margin: 6px 0 10px; }
+  .copy p { color: var(--muted-foreground); }
+
+  figure {
+    margin: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow-card);
+    background: var(--card);
+    /* The captures are 1440x900 viewports; reserve the ratio so nothing shifts. */
+    aspect-ratio: 16 / 10;
+  }
+  figure :global(img) {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: top left;
+  }
+
+  @media (max-width: 900px) {
+    .step { grid-template-columns: 1fr; gap: 18px; margin-bottom: 40px; }
+    .flip .copy, .flip figure { order: initial; }
+  }
+</style>

@@ -1,0 +1,89 @@
+@font-face {
+  font-family: 'DM Sans';
+  src: url('/fonts/dm-sans-400.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'DM Sans';
+  src: url('/fonts/dm-sans-500.woff2') format('woff2');
+  font-weight: 500;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'DM Sans';
+  src: url('/fonts/dm-sans-600.woff2') format('woff2');
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'DM Sans';
+  src: url('/fonts/dm-sans-700.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Fraunces';
+  src: url('/fonts/fraunces-variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'JetBrains Mono';
+  src: url('/fonts/jetbrains-mono-variable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+:root {
+  --font-sans: 'DM Sans', system-ui, sans-serif;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, monospace;
+
+  --background: #F6F3ED;
+  --foreground: #0B1D1C;
+  --card: #FFFFFF;
+  --primary: #1A6B5A;
+  --primary-foreground: #F6F3ED;
+  --muted: #ECE8DE;
+  --muted-foreground: #6B7F7C;
+  --accent: #C7956D;
+  --border: #D6D0C4;
+  --ring: #1A6B5A;
+  --destructive: #C23D3D;
+  --emerald: #34D399;
+  --radius: 0.875rem;
+  --shadow-card: 0 1px 2px rgba(11, 29, 28, 0.04),
+                 0 10px 26px -18px rgba(11, 29, 28, 0.14);
+  --hero-gradient: linear-gradient(165deg, #0B1D1C 0%, #143330 40%, #1A6B5A 100%);
+}
+
+.dark {
+  --background: #0A1514;
+  --foreground: #E0E7E5;
+  --card: #0F2220;
+  --primary: #34D399;
+  --primary-foreground: #0A1514;
+  --muted: #152E2C;
+  --muted-foreground: #7A918D;
+  --accent: #D4A574;
+  --border: #1E3836;
+  --ring: #34D399;
+  --destructive: #EF6B6B;
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.3),
+                 0 10px 28px -16px rgba(0, 0, 0, 0.55);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: var(--font-sans);
+  background: var(--background);
+  color: var(--foreground);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 { font-family: var(--font-display); letter-spacing: -0.02em; line-height: 1.12; }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+.prose { max-width: 62ch; }

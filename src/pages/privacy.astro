@@ -1,0 +1,102 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE } from '../config';
+import { organizationLd } from '../lib/jsonld';
+---
+<Base
+  title="Privacy notice — Grovetrace"
+  description="What Grovetrace collects when you book a demo, why, who processes it, how long it is kept, and how to have it deleted."
+  jsonLd={[organizationLd()]}
+>
+  <section class="privacy">
+    <div class="wrap inner prose">
+      <h1>Privacy notice</h1>
+      <p class="updated">Last updated 23 August 2026</p>
+
+      <p>
+        Grovetrace sells software for EU regulatory compliance, so it would be a
+        poor look to be vague here. This page says exactly what happens to your
+        data. It is short because very little happens to it.
+      </p>
+
+      <h2>What this site collects</h2>
+      <p>
+        Browsing grovetrace.com collects <strong>nothing</strong>. There is no
+        analytics, no advertising pixel, no cookie banner, because there are no
+        cookies to consent to. Fonts are served from this domain rather than a
+        third-party CDN, so no request for them leaves for another company.
+      </p>
+      <p>
+        The one exception is the <a href="/demo/">booking page</a>. It embeds
+        Cal.com's scheduler, so opening that page loads a script from Cal.com and
+        Cal.com receives your IP address and sets its own cookies — as it would
+        if you visited their site directly. No other page on this site does that.
+      </p>
+      <p>
+        If you go on to book, Cal.com collects what you enter: your name, email,
+        and your answers to the booking questions — company, role, commodities,
+        and the open question in your supply chain.
+      </p>
+
+      <h2>Why</h2>
+      <p>
+        To reply to you and to hold a useful first call. That is the only
+        purpose. The lawful basis is your consent, given by submitting the form,
+        and steps taken at your request before entering a contract.
+      </p>
+      <p>
+        You will not be added to a mailing list, and your details are never sold,
+        rented or shared for anyone else's marketing.
+      </p>
+
+      <h2>Who else processes it</h2>
+      <ul>
+        <li>
+          <strong>Cal.com</strong> handles scheduling. Its script runs on the
+          booking page, and it stores the booking and your answers so the
+          appointment exists. See their own privacy notice for what they do with
+          it.
+        </li>
+        <li>
+          <strong>Google Workspace</strong> hosts the mailbox the enquiry lands
+          in, and the calendar invitation.
+        </li>
+      </ul>
+
+      <h2>How long it is kept</h2>
+      <p>
+        Bookings and enquiries are kept for <strong>24 months</strong> and then
+        deleted. If a conversation becomes a customer relationship, the records
+        that belong to that contract are kept for as long as the contract and
+        applicable accounting law require.
+      </p>
+
+      <h2>Your rights</h2>
+      <p>
+        Under the GDPR you can ask for a copy of what is held about you, ask for
+        it to be corrected or erased, object to its processing, or withdraw
+        consent. Email <a href={`mailto:${SITE.email}`}>{SITE.email}</a> and it
+        will be actioned — deletion within 30 days, usually the same week. You
+        may also complain to your national data protection authority.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        Grovetrace — <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
+        For anything about this notice, use the same address.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .privacy { padding: 56px 0 72px; }
+  .inner { max-width: 68ch; }
+  h1 { font-size: clamp(1.9rem, 4vw, 2.5rem); margin-bottom: 6px; }
+  .updated { color: var(--muted-foreground); font-size: 0.9rem; margin-bottom: 28px; }
+  h2 { font-size: 1.2rem; margin: 32px 0 10px; }
+  .prose p, .prose li { color: var(--muted-foreground); }
+  .prose p + p { margin-top: 12px; }
+  .prose strong { color: var(--foreground); }
+  ul { padding-left: 1.1rem; display: grid; gap: 8px; margin-top: 8px; }
+</style>

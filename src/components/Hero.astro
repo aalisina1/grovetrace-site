@@ -1,0 +1,46 @@
+---
+import Countdown from './Countdown.astro';
+---
+<section class="hero">
+  <svg class="topo" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <pattern id="topo" width="120" height="120" patternUnits="userSpaceOnUse">
+        <path d="M0 60 Q30 30 60 60 Q90 90 120 60" stroke="white" fill="none" stroke-width="0.5"/>
+        <path d="M0 30 Q30 0 60 30 Q90 60 120 30" stroke="white" fill="none" stroke-width="0.5"/>
+        <path d="M0 90 Q30 60 60 90 Q90 120 120 90" stroke="white" fill="none" stroke-width="0.5"/>
+      </pattern>
+    </defs>
+    <rect width="100%" height="100%" fill="url(#topo)"/>
+  </svg>
+
+  <div class="wrap inner">
+    <h1>Be EUDR-ready <em>before</em> the deadline, not during it.</h1>
+    <p class="lede">
+      From 30 December 2026, every shipment of cocoa placed on the EU market
+      needs a Due Diligence Statement in TRACES — traced to the plot of land it
+      grew on. Grovetrace is built for cocoa first, and for the six other EUDR
+      commodities that work the same way.
+    </p>
+    <div class="ctas">
+      <a class="cta" href="/demo/">Book a demo</a>
+      <a class="ghost" href="#how-it-works">See how it works</a>
+    </div>
+    <div><Countdown /></div>
+  </div>
+</section>
+
+<style>
+  .hero { position: relative; overflow: hidden; background: var(--hero-gradient);
+          color: #E8ECE9; padding: 72px 0 140px; }
+  .topo { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.06; }
+  .inner { position: relative; z-index: 1; }
+  h1 { font-size: clamp(2.1rem, 5.5vw, 3.4rem); max-width: 21ch; color: #fff; }
+  h1 em { font-style: italic; color: var(--emerald); }
+  .lede { margin: 22px 0 30px; font-size: 1.13rem; color: rgba(232,236,233,0.75);
+          max-width: 58ch; }
+  .ctas { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 26px; }
+  .cta { background: var(--emerald); color: #0B1D1C; text-decoration: none;
+         padding: 13px 26px; border-radius: 8px; font-weight: 600; }
+  .ghost { color: #E8ECE9; text-decoration: none; padding: 13px 20px;
+           border: 1px solid rgba(255,255,255,0.22); border-radius: 8px; }
+</style>
