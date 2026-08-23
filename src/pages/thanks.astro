@@ -1,0 +1,48 @@
+---
+import Base from '../layouts/Base.astro';
+import { SITE, CAL_LINK } from '../config';
+
+/**
+ * Where Web3Forms sends a visitor whose browser has JavaScript disabled: the
+ * form posts natively, so the calendar step never runs and they would otherwise
+ * land on Web3Forms' generic success page with no way to book. Free Web3Forms
+ * accounts may only redirect to the same domain, which this is.
+ */
+const CAL_URL = `https://cal.com/${CAL_LINK}`;
+---
+<Base
+  title="Thanks — your demo request is in"
+  description="Your demo request reached Grovetrace. Pick a time that suits you, or wait for a reply by email."
+  noindex
+>
+  <section class="thanks">
+    <div class="wrap inner prose">
+      <h1>Got it — thank you.</h1>
+      <p class="lede">
+        Your details reached me. Now pick a time that suits you, and I'll come
+        to the call having read what you wrote.
+      </p>
+
+      <a class="cta" href={CAL_URL} target="_blank" rel="noopener">Pick a time</a>
+
+      <p class="alt">
+        Would rather not book yet? Reply to the confirmation, or email
+        <a href={`mailto:${SITE.email}`}>{SITE.email}</a> and I'll answer the
+        same day.
+      </p>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .thanks { padding: 72px 0 96px; }
+  .inner { max-width: 60ch; }
+  h1 { font-size: clamp(1.9rem, 4vw, 2.6rem); margin-bottom: 12px; }
+  .lede { color: var(--muted-foreground); font-size: 1.08rem; margin-bottom: 28px; }
+  .cta {
+    display: inline-block; background: var(--primary); color: #fff;
+    text-decoration: none; padding: 13px 28px; border-radius: 8px; font-weight: 600;
+  }
+  .alt { margin-top: 26px; color: var(--muted-foreground); font-size: 0.95rem; }
+  .alt a { color: var(--primary); }
+</style>

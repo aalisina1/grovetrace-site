@@ -5,8 +5,10 @@ interface Props {
   title: string;
   description: string;
   ogType?: string;
+  /** Post-submission pages carry no search value and should not be indexed. */
+  noindex?: boolean;
 }
-const { title, description, ogType = 'website' } = Astro.props;
+const { title, description, ogType = 'website', noindex = false } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site ?? SITE.url).href;
 const ogImage = new URL('/img/og-default.png', Astro.site ?? SITE.url).href;
@@ -14,6 +16,7 @@ const ogImage = new URL('/img/og-default.png', Astro.site ?? SITE.url).href;
 <title>{title}</title>
 <meta name="description" content={description} />
 <link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex, follow" />}
 
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />

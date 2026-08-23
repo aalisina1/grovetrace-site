@@ -21,6 +21,14 @@ const COMMODITIES = ['Cocoa', 'Coffee', 'Palm oil', 'Soy', 'Rubber', 'Cattle', '
       <input type="hidden" name="access_key" value={WEB3FORMS_KEY} />
       <input type="hidden" name="subject" value="Grovetrace — demo request" />
       <input type="hidden" name="from_name" value="grovetrace.com" />
+      <!--
+        Only used when JavaScript is off: the submit handler calls
+        preventDefault, so with JS the calendar is revealed in place instead.
+        Without it a no-JS visitor lands on Web3Forms' own success page with no
+        way to book — they tell us who they are and hit a dead end. Free
+        Web3Forms accounts may only redirect to the same domain.
+      -->
+      <input type="hidden" name="redirect" value={`${SITE.url}/thanks/`} />
       <!-- Web3Forms' spam trap: bots fill it, people never see it. -->
       <input type="checkbox" name="botcheck" class="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" />
 
@@ -161,6 +169,12 @@ const COMMODITIES = ['Cocoa', 'Coffee', 'Palm oil', 'Soy', 'Rubber', 'Cattle', '
       const data = new FormData(form);
       const name = String(data.get('name') ?? '');
       const email = String(data.get('email') ?? '');
+
+      // `redirect` exists only for the no-JS native submit. Left in the fetch
+      // body, Web3Forms answers 302 instead of JSON and the cross-origin
+      // redirect is blocked by CORS, so a working submission looks to the
+      // visitor exactly like an outage.
+      data.delete('redirect');
 
       try {
         const res = await fetch(form.action, {

@@ -7,5 +7,8 @@ export default defineConfig({
   // No `base` — apex custom domain. Setting it breaks every internal link.
   trailingSlash: 'always',
   build: { format: 'directory' },
-  integrations: [sitemap()],
+  integrations: [
+    // /thanks/ is a post-submission destination with no search value.
+    sitemap({ filter: (page) => !page.includes('/thanks/') }),
+  ],
 });

@@ -127,7 +127,12 @@ describe('internal links', () => {
    * resolve each internal href against dist/ — the same directory-index rule
    * the site is deployed under (`trailingSlash: 'always'`).
    */
-  const pages = ['index.html', 'demo/index.html', 'privacy/index.html'];
+  const pages = [
+    'index.html',
+    'demo/index.html',
+    'privacy/index.html',
+    'thanks/index.html',
+  ];
 
   function resolves(href: string): boolean {
     const path = href.split('#')[0].split('?')[0];
@@ -151,4 +156,30 @@ describe('internal links', () => {
       expect(internal.filter((h) => !resolves(h))).toEqual([]);
     });
   }
+});
+
+describe('post-submission page', () => {
+  it('keeps /thanks/ out of the sitemap', () => {
+    // It is a redirect destination, not a page anyone should arrive at from
+    // search — and indexing it would leak form-completion pages into results.
+    const files = ['sitemap-0.xml', 'sitemap-index.xml']
+      .filter((f) => existsSync(dist(f)))
+      .map((f) => readFileSync(dist(f), 'utf8'))
+      .join('');
+    expect(files).not.toContain('/thanks/');
+    // Negative control: the sitemap must actually list something, or the
+    // assertion above passes on an empty file.
+    expect(files).toContain('/demo/');
+  });
+
+  it('marks /thanks/ noindex', () => {
+    const html = readFileSync(dist('thanks/index.html'), 'utf8');
+    expect(html).toMatch(/<meta name="robots" content="noindex/);
+  });
+
+  it('leaves the indexable pages without a noindex tag', () => {
+    for (const page of ['index.html', 'demo/index.html']) {
+      expect(readFileSync(dist(page), 'utf8')).not.toContain('noindex');
+    }
+  });
 });

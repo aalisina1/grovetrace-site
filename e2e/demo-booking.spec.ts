@@ -56,7 +56,48 @@ test.describe('demo booking form', () => {
     );
     await expect(page.locator('#demo-form')).toHaveAttribute('method', /post/i);
     await expect(page.locator('input[name="access_key"]')).toHaveCount(1);
+    // Without a redirect the no-JS visitor lands on Web3Forms' own success page
+    // with no way to book — they identify themselves and hit a dead end.
+    await expect(page.locator('input[name="redirect"]')).toHaveAttribute(
+      'value',
+      'https://grovetrace.com/thanks/',
+    );
     await ctx.close();
+  });
+
+  test('a no-JavaScript submit still ends somewhere you can book', async ({ browser }) => {
+    const ctx = await browser.newContext({ javaScriptEnabled: false });
+    const page = await ctx.newPage();
+    // Stand in for Web3Forms honouring the `redirect` field. Routing works at
+    // the network layer, so it applies with scripting disabled.
+    // The Location header must be absolute: a relative '/thanks/' resolves
+    // against api.web3forms.com, not this site, and the assertion below would
+    // then be running against a page that was never served.
+    await ctx.route('https://api.web3forms.com/submit', (route) =>
+      route.fulfill({
+        status: 302,
+        headers: { location: 'http://localhost:4321/thanks/' },
+        body: '',
+      }),
+    );
+
+    await page.goto('/demo/');
+    await fillForm(page);
+    await page.click('button[type="submit"]');
+
+    await page.waitForURL('http://localhost:4321/thanks/');
+    const booking = page.locator('a[href*="cal.com"]');
+    await expect(booking).toBeVisible();
+    await ctx.close();
+  });
+
+  test('the thanks page offers a booking link and is not indexable', async ({ page }) => {
+    await page.goto('/thanks/');
+    await expect(page.locator('a[href*="cal.com"]')).toBeVisible();
+    await expect(page.locator('meta[name="robots"]')).toHaveAttribute(
+      'content',
+      /noindex/,
+    );
   });
 
   test('carries a honeypot field that is hidden from people', async ({ page }) => {
@@ -72,6 +113,32 @@ test.describe('demo booking form', () => {
     const box = await honeypot.boundingBox();
     expect(box).not.toBeNull();
     expect(box!.x + box!.width).toBeLessThan(0);
+  });
+
+  test('does not send the no-JS redirect field in the fetch body', async ({ page }) => {
+    // With `redirect` present Web3Forms replies 302 rather than JSON, and the
+    // cross-origin redirect trips CORS — a successful submission then presents
+    // to the visitor as an outage. Caught only against the real API, so assert
+    // it here.
+    let body = '';
+    await page.route('https://api.web3forms.com/submit', (route) => {
+      body = route.request().postData() ?? '';
+      return route.fulfill({
+        status: 200,
+        contentType: 'application/json',
+        body: JSON.stringify({ success: true, body: { message: 'ok' } }),
+      });
+    });
+
+    await page.goto('/demo/');
+    await fillForm(page);
+    await page.click('button[type="submit"]');
+    await expect(page.locator('#cal-step')).toBeVisible();
+
+    expect(body).not.toContain('redirect');
+    // Negative control: the payload we do care about must actually be there,
+    // or the assertion above passes on an empty body.
+    expect(body).toContain('Example Cocoa BV');
   });
 });
 
