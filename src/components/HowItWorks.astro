@@ -7,14 +7,14 @@ import plot from '../assets/product/plot-detail.png';
 
 /**
  * Real screenshots of the running product, captured against the demo dataset.
- * Recaptured per release — see docs in the repo README.
+ * Recaptured per release; see docs in the repo README.
  */
 const steps = [
   {
     n: '01',
     title: 'Connect the systems you already run',
     body:
-      'Field-data tools, ERP exports, co-op spreadsheets, CSV. You map each source once — farmers to suppliers, plots to land plots, lots to batches — and Grovetrace keeps pulling. Origin never has to adopt your software, because nothing about their process changes.',
+      'Field-data tools, ERP exports, co-op spreadsheets, CSV. You map each source once (farmers to suppliers, plots to land plots, lots to batches) and Grovetrace keeps pulling. Origin never has to adopt your software, because nothing about their process changes.',
     img: mappings,
     alt: 'Grovetrace field mapping screen showing three configured FarmForce mappings: farmers to SUPPLIER, lots to BATCH, and plots to LAND_PLOT.',
   },
@@ -30,15 +30,15 @@ const steps = [
     n: '03',
     title: 'Work one action at a time',
     body:
-      'The action queue is ordered by what runs out of time first, one action per row — cover this shipment, review this blocked plot, file this statement. Orders that cannot move sit separately under what they are waiting for, so nothing looks urgent when it is merely stuck.',
+      'The action queue is ordered by what runs out of time first, one action per row: cover this shipment, review this blocked plot, file this statement. Orders that cannot move sit separately under what they are waiting for, so nothing looks urgent when it is merely stuck.',
     img: sourcing,
-    alt: 'Grovetrace sourcing worklist listing purchase orders for cocoa with supplier, tonnage coverage bars, next deadline and stage — one row blocked because a plot failed deforestation validation.',
+    alt: 'Grovetrace sourcing worklist listing purchase orders for cocoa with supplier, tonnage coverage bars, next deadline and stage, with one row blocked because a plot failed deforestation validation.',
   },
   {
     n: '04',
     title: 'Every batch ties back to the land',
     body:
-      'Plot geometry, the validation result behind it, and the batches it feeds — held together rather than in three systems. When a statement is challenged years later, the evidence is one click from the shipment, not a reconstruction.',
+      'Plot geometry, the validation result behind it, and the batches it feeds, held together rather than sitting in three systems. When a statement is challenged years later, the evidence is one click from the shipment, not a reconstruction.',
     img: plot,
     alt: 'Grovetrace land plot detail: a 22.5 hectare plot in Western Ghana drawn as a polygon on the map, with Global Forest Watch validation showing deforestation detected at 95% confidence.',
   },
@@ -48,18 +48,27 @@ const steps = [
   <div class="wrap">
     <h2>How it works</h2>
     <p class="intro prose">
-      The filing is a form. The hard part is everything upstream of it — which is
+      The filing is a form. The hard part is everything upstream of it, which is
       what Grovetrace is actually for.
     </p>
 
     {steps.map((s, i) => (
       <div class:list={['step', i % 2 === 1 && 'flip']}>
-        <div class="copy">
+        <div class="copy reveal">
           <span class="n">{s.n}</span>
           <h3>{s.title}</h3>
           <p>{s.body}</p>
         </div>
-        <figure>
+        <figure class="reveal reveal-late">
+          {/* Window chrome frames the capture as a running application rather
+              than a floating image. The address pill is deliberately blank:
+              the app is not deployed, and inventing a URL would be a small
+              lie on a page whose whole argument is that the product is real. */}
+          <div class="chrome" aria-hidden="true">
+            <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+            <div class="pill"></div>
+          </div>
+          <div class="shot">
           <Image
             src={s.img}
             alt={s.alt}
@@ -67,7 +76,9 @@ const steps = [
             sizes="(max-width: 900px) 92vw, 620px"
             loading={i === 0 ? 'eager' : 'lazy'}
             fetchpriority={i === 0 ? 'high' : 'auto'}
+            class="drift"
           />
+          </div>
         </figure>
       </div>
     ))}
@@ -103,12 +114,39 @@ const steps = [
     border: 1px solid var(--border);
     border-radius: var(--radius);
     overflow: hidden;
-    box-shadow: var(--shadow-card);
     background: var(--card);
-    /* The captures are 1440x900 viewports; reserve the ratio so nothing shifts. */
-    aspect-ratio: 16 / 10;
+    box-shadow:
+      0 1px 2px rgba(11, 29, 28, 0.05),
+      0 24px 48px -28px rgba(11, 29, 28, 0.35);
   }
-  figure :global(img) {
+
+  .chrome {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 12px;
+    background: color-mix(in srgb, var(--muted) 70%, var(--card));
+    border-bottom: 1px solid var(--border);
+  }
+  .dot {
+    width: 9px; height: 9px; border-radius: 50%;
+    background: var(--border);
+  }
+  .pill {
+    flex: 1;
+    height: 16px;
+    margin-left: 8px;
+    border-radius: 999px;
+    background: color-mix(in srgb, var(--background) 80%, var(--card));
+  }
+
+  .shot {
+    /* The captures are 1440x900 viewports; reserve the ratio so nothing shifts.
+       Sits on the figure's inner wrapper so the chrome is excluded from it. */
+    aspect-ratio: 16 / 10;
+    overflow: hidden;
+  }
+  .shot :global(img) {
     display: block;
     width: 100%;
     height: 100%;

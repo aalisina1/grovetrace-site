@@ -9,16 +9,16 @@ import { FAQ, faqPlainText } from '../lib/faq';
 import { organizationLd, softwareApplicationLd, faqPageLd } from '../lib/jsonld';
 
 const what = [
-  { title: 'Ingests your data where it lives', body: 'Supplier and plot data from the systems you already run — ERP exports, farm-data platforms, CSV. No rip-and-replace.' },
+  { title: 'Ingests your data where it lives', body: 'Supplier and plot data from the systems you already run: ERP exports, farm-data platforms, CSV. No rip-and-replace.' },
   { title: 'Ties every batch to the land it came from', body: 'Geolocated plots (points and polygons), batch-to-plot traceability across aggregation and blending.' },
   { title: 'Records the compliance conclusion per shipment', body: 'Deforestation-risk and legality assessment, captured with its evidence.' },
-  { title: 'Generates and submits the DDS to TRACES', body: 'The regulated output — submitted, reference stored.' },
+  { title: 'Generates and submits the DDS to TRACES', body: 'The regulated output, submitted, with the reference stored.' },
   { title: 'Keeps the audit trail', body: 'Five-year, per-organization evidence trail behind every submission.' },
 ];
 ---
 <Base
-  title="Grovetrace — EUDR compliance software for cocoa: plot data in, accepted DDS out"
-  description="Grovetrace ingests supplier and plot data from the systems you already run, ties every cocoa batch to the land it grew on, and files the Due Diligence Statement in TRACES — before the 30 December 2026 EUDR deadline."
+  title="Grovetrace: EUDR compliance software for cocoa, plot data in and accepted DDS out"
+  description="Grovetrace ingests supplier and plot data from the systems you already run, ties every cocoa batch to the land it grew on, and files the Due Diligence Statement in TRACES, before the 30 December 2026 EUDR deadline."
   jsonLd={[
     organizationLd(),
     softwareApplicationLd(),
@@ -33,7 +33,7 @@ const what = [
         <h2>The hard part isn’t the filing</h2>
         <p>
           It’s that supplier and plot data live in ERPs, farm-data tools, co-op
-          spreadsheets and email attachments — and they don’t line up. Polygons
+          spreadsheets and email attachments, and they don’t line up. Polygons
           arrive late, malformed or overlapping, and it’s <strong>your</strong>{' '}
           submission that fails.
         </p>
@@ -62,7 +62,7 @@ const what = [
         ))}
       </ul>
       <p class="status">
-        Multi-tenant platform built for smallholder tree-crop supply chains —
+        Multi-tenant platform built for smallholder tree-crop supply chains,
         cocoa first. Running against the TRACES acceptance environment today.
       </p>
     </div>

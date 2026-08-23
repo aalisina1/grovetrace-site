@@ -1,0 +1,118 @@
+/*
+ * Scroll choreography and ambient motion.
+ *
+ * ── The rule that governs this whole file ──────────────────────────────────
+ * The VISIBLE state is the default. Every rule that hides or displaces an
+ * element lives inside `@supports (animation-timeline: view())`, so a browser
+ * without scroll-driven animations (Safari, at time of writing) renders the
+ * page fully and simply does not animate.
+ *
+ * Get this wrong and the failure is severe rather than cosmetic: an element
+ * parked at `opacity: 0` waiting for an animation that never runs is
+ * permanently invisible. A naive version of this file would ship a blank
+ * "How it works" section to every Mac and iPhone visitor. `tests/build`
+ * asserts that no `opacity: 0` rule appears outside a `@supports` block.
+ *
+ * Motion is additionally gated on `prefers-reduced-motion: no-preference`.
+ */
+
+:root {
+  --ease-out-soft: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --reveal-shift: 20px;
+}
+
+/* ── Scroll reveals ─────────────────────────────────────────────────────── */
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: reveal-rise linear both;
+      animation-timeline: view();
+      /* Finishes well before the element is centred, so copy is settled by the
+         time it is actually being read. */
+      animation-range: entry 4% cover 26%;
+    }
+
+    /* Stagger a figure slightly behind its copy so the pair reads as one
+       gesture rather than two things moving at once. */
+    .reveal-late {
+      animation-range: entry 10% cover 34%;
+    }
+
+    @keyframes reveal-rise {
+      from {
+        opacity: 0;
+        transform: translateY(var(--reveal-shift));
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Screenshots drift a little slower than the page across their whole pass,
+       which is what gives the section depth. Deliberately small: a few pixels
+       reads as parallax, twenty reads as a carousel. */
+    .drift {
+      animation: drift-up linear both;
+      animation-timeline: view();
+      animation-range: cover;
+    }
+
+    /* The headroom comes from a transform scale rather than a taller box:
+       growing the image's layout height makes `object-fit: cover` crop the
+       right-hand edge of a 16:10 capture, which silently ate the buttons on
+       the right of the mapping screen. Scaling crops evenly and changes no
+       layout. */
+    @keyframes drift-up {
+      from {
+        transform: scale(1.06) translateY(10px);
+      }
+      to {
+        transform: scale(1.06) translateY(-10px);
+      }
+    }
+  }
+}
+
+/* ── Ambient hero motion ────────────────────────────────────────────────── */
+/*
+ * Not scroll-driven, so this needs no @supports guard — but it must still be
+ * silent for prefers-reduced-motion, and it must never affect layout or
+ * legibility. Both animations are transform/opacity only, on decorative
+ * layers that sit behind the text.
+ */
+
+@media (prefers-reduced-motion: no-preference) {
+  /* The topographic pattern repeats every 120 units, so translating by exactly
+     one tile loops with no visible seam. Slow enough to register as depth
+     rather than as animation. */
+  .topo-drift {
+    animation: topo-pan 90s linear infinite;
+  }
+
+  @keyframes topo-pan {
+    from {
+      transform: translate3d(0, 0, 0);
+    }
+    to {
+      transform: translate3d(-120px, -120px, 0);
+    }
+  }
+
+  /* A single soft light source breathing behind the headline. */
+  .hero-glow {
+    animation: glow-breathe 24s var(--ease-out-soft) infinite alternate;
+  }
+
+  @keyframes glow-breathe {
+    from {
+      opacity: 0.32;
+      transform: translate3d(-4%, 0, 0) scale(1);
+    }
+    to {
+      opacity: 0.6;
+      transform: translate3d(4%, -3%, 0) scale(1.12);
+    }
+  }
+}

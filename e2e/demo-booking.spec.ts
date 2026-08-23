@@ -65,3 +65,44 @@ test.describe('home page', () => {
     await expect(page).toHaveURL(/\/demo\/$/);
   });
 });
+
+test.describe('scroll motion', () => {
+  test('shows every step with reduced motion, without scrolling', async ({ browser }) => {
+    // With prefers-reduced-motion the reveal never runs. If any hiding rule
+    // escaped its guard, content below the fold would be invisible forever.
+    const ctx = await browser.newContext({ reducedMotion: 'reduce' });
+    const page = await ctx.newPage();
+    await page.goto('/');
+
+    for (const heading of [
+      'Connect the systems you already run',
+      'Log in and see exactly where you stand',
+      'Work one action at a time',
+      'Every batch ties back to the land',
+    ]) {
+      const el = page.getByRole('heading', { name: heading });
+      await expect(el).toHaveCount(1);
+      // Not toBeVisible(): an element can be "visible" to Playwright while its
+      // opacity is 0. Check the computed value that actually matters.
+      const opacity = await el.evaluate((n) =>
+        getComputedStyle(n.closest('.copy') ?? n).opacity,
+      );
+      expect(Number(opacity)).toBe(1);
+    }
+    await ctx.close();
+  });
+
+  test('renders all four product screenshots', async ({ page }) => {
+    await page.goto('/');
+    await page.evaluate(async () => {
+      for (let y = 0; y < document.body.scrollHeight; y += 500) {
+        window.scrollTo(0, y);
+        await new Promise((r) => setTimeout(r, 80));
+      }
+    });
+    await page.waitForFunction(() =>
+      [...document.images].every((i) => i.complete && i.naturalWidth > 0),
+    );
+    expect(await page.locator('#how-it-works img').count()).toBe(4);
+  });
+});
