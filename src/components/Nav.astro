@@ -5,7 +5,7 @@ const links = buildNavLinks(APP_URL);
 ---
 <nav class="nav">
   <div class="wrap nav-inner">
-    <a class="brand" href="/">
+    <a class="brand" href="/" aria-label="Grovetrace home">
       <svg width="26" height="26" viewBox="0 0 100 100" aria-hidden="true">
         <polygon points="50,9 82,29 71,63 29,61 18,27" fill="none"
           stroke="currentColor" stroke-width="8" stroke-linejoin="round"/>
@@ -21,19 +21,63 @@ const links = buildNavLinks(APP_URL);
     <ul>
       {links.map((l) => (
         <li>
-          <a href={l.href} class={l.label === 'Book a demo' ? 'cta' : ''}>{l.label}</a>
+          <a href={l.href} class={l.label === 'Book a demo' ? 'cta press' : 'u-link'}>{l.label}</a>
         </li>
       ))}
     </ul>
   </div>
 </nav>
 
+<script>
+  /*
+   * Chrome that reacts to where you are in the page. The class is toggled
+   * rather than styles being written inline, so all the presentation stays in
+   * CSS and honours prefers-reduced-motion with it.
+   *
+   * Guarded on rAF so a fast scroll cannot queue a style write per event.
+   */
+  const nav = document.querySelector('.nav');
+  if (nav) {
+    let ticking = false;
+    const sync = () => {
+      nav.classList.toggle('is-scrolled', window.scrollY > 12);
+      ticking = false;
+    };
+    sync();
+    window.addEventListener(
+      'scroll',
+      () => {
+        if (ticking) return;
+        ticking = true;
+        window.requestAnimationFrame(sync);
+      },
+      { passive: true },
+    );
+  }
+</script>
+
 <style>
   .nav { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(8px);
          background: color-mix(in srgb, var(--background) 85%, transparent);
          border-bottom: 1px solid var(--border); }
   .nav-inner { display: flex; align-items: center; justify-content: space-between;
-               padding-block: 14px; flex-wrap: wrap; row-gap: 8px; }
+               padding-block: 18px; flex-wrap: wrap; row-gap: 8px; }
+
+  /* Condense once the page has moved. Padding and the mark tighten, and the
+     bar gains a little depth, so the chrome tracks where you are. */
+  .nav.is-scrolled .nav-inner { padding-block: 11px; }
+  .nav.is-scrolled { box-shadow: 0 1px 0 var(--border), 0 8px 24px -20px rgba(11, 29, 28, 0.5); }
+  .nav.is-scrolled .brand svg { transform: scale(0.9); }
+  .nav.is-scrolled .brand { font-size: 1.12rem; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .nav, .nav-inner, .brand, .brand svg {
+      transition: padding-block 220ms var(--ease-out-soft),
+                  box-shadow 220ms var(--ease-out-soft),
+                  font-size 220ms var(--ease-out-soft),
+                  transform 220ms var(--ease-out-soft);
+    }
+  }
   .brand { display: flex; align-items: center; gap: 10px; font-weight: 700;
            font-size: 1.2rem; color: var(--primary); text-decoration: none; }
   .brand span { color: var(--foreground); }

@@ -59,7 +59,7 @@ const steps = [
           <h3>{s.title}</h3>
           <p>{s.body}</p>
         </div>
-        <figure class="reveal reveal-late">
+        <figure class="reveal reveal-late lift">
           {/* Window chrome frames the capture as a running application rather
               than a floating image. The address pill is deliberately blank:
               the app is not deployed, and inventing a URL would be a small
@@ -131,6 +131,14 @@ const steps = [
   .dot {
     width: 9px; height: 9px; border-radius: 50%;
     background: var(--border);
+  }
+  /* A real window's controls colour up when it has focus. Cheap detail, and
+     it is the sort of thing people read as "someone cared". */
+  figure:hover .dot:nth-child(1) { background: #E5786B; }
+  figure:hover .dot:nth-child(2) { background: #E3B341; }
+  figure:hover .dot:nth-child(3) { background: #57A773; }
+  @media (prefers-reduced-motion: no-preference) {
+    .dot { transition: background-color 240ms var(--ease-out-soft); }
   }
   .pill {
     flex: 1;
