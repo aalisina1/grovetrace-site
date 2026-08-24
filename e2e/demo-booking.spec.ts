@@ -106,3 +106,59 @@ test.describe('scroll motion', () => {
     expect(await page.locator('#how-it-works img').count()).toBe(4);
   });
 });
+
+test.describe('interface maturity', () => {
+  test('every interactive element has a visible focus state', async ({ page }) => {
+    // A page that only works with a mouse is not a well-built one, and
+    // keyboard operability is something regulated-procurement buyers check.
+    await page.goto('/');
+    const targets = page.locator('a[href], button, summary');
+    const n = await targets.count();
+    expect(n).toBeGreaterThan(5);
+
+    for (let i = 0; i < n; i++) {
+      const el = targets.nth(i);
+      if (!(await el.isVisible())) continue;
+      await el.focus();
+      const ring = await el.evaluate((node) => {
+        const cs = getComputedStyle(node);
+        return { width: cs.outlineWidth, style: cs.outlineStyle };
+      });
+      // outline-style: none, or a zero-width outline, means no visible ring.
+      expect(
+        ring.style !== 'none' && parseFloat(ring.width) > 0,
+        `no focus ring on element ${i}`,
+      ).toBe(true);
+    }
+  });
+
+  test('states no social proof it does not have', async ({ page }) => {
+    // The page is explicit elsewhere that Grovetrace is early. Claiming
+    // customers it does not have would undercut that and, once spotted, every
+    // other claim with it.
+    await page.goto('/');
+    const text = (await page.locator('body').innerText()).toLowerCase();
+    for (const phrase of ['trusted by', 'our customers', 'testimonial', 'join thousands', 'loved by']) {
+      expect(text).not.toContain(phrase);
+    }
+  });
+
+  test('the capability strip states checkable facts', async ({ page }) => {
+    await page.goto('/');
+    const strip = page.locator('section[aria-label="Platform capabilities"]');
+    await expect(strip).toBeVisible();
+    await expect(strip.locator('li')).toHaveCount(5);
+    await expect(strip).toContainText('Points and polygons');
+    await expect(strip).toContainText('Acceptance round trip');
+  });
+
+  test('the nav reacts to scroll', async ({ page }) => {
+    await page.goto('/');
+    const nav = page.locator('.nav');
+    await expect(nav).not.toHaveClass(/is-scrolled/);
+    await page.evaluate(() => window.scrollTo(0, 400));
+    await expect(nav).toHaveClass(/is-scrolled/);
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await expect(nav).not.toHaveClass(/is-scrolled/);
+  });
+});

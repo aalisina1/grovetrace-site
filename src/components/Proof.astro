@@ -1,0 +1,86 @@
+---
+/**
+ * The one place on the page where maturity is stated rather than demonstrated.
+ *
+ * Every item here is a specific, checkable capability of the running platform,
+ * not an adjective and not social proof. There are no customer logos, no
+ * "trusted by", and no invented figures, because the positioning is explicit
+ * that Grovetrace is early and says so on this same page. A buyer who catches
+ * one fabricated signal discounts everything else, and the spec forbids them
+ * outright. `tests/build` asserts the fabricated-proof phrases stay absent.
+ *
+ * If a line here stops being true, delete it.
+ */
+const facts = [
+  {
+    k: 'Geometry',
+    v: 'Points and polygons',
+    note: 'Validated on ingest: validity, hemisphere, range, duplicates, overlaps.',
+  },
+  {
+    k: 'Isolation',
+    v: 'Org-scoped, every query',
+    note: 'Multi-tenant by organization, so one operator never sees another.',
+  },
+  {
+    k: 'Evidence',
+    v: 'Five-year audit trail',
+    note: 'Retained per organization behind every submission, as the regulation requires.',
+  },
+  {
+    k: 'Coverage',
+    v: 'All seven commodities',
+    note: 'Cocoa, coffee, palm oil, soy, rubber, cattle and wood share one model.',
+  },
+  {
+    k: 'TRACES',
+    v: 'Acceptance round trip',
+    note: 'A statement taken end to end against the EU pre-production system.',
+  },
+];
+---
+<section class="proof" aria-label="Platform capabilities">
+  <div class="wrap">
+    <ul>
+      {facts.map((f) => (
+        <li class="lift reveal">
+          <span class="k">{f.k}</span>
+          <span class="v">{f.v}</span>
+          <span class="note">{f.note}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>
+
+<style>
+  /* No top padding: the preceding band already ends with 56px, and these
+     cards are evidence for the claim it just made rather than a separate
+     section. The extra 40px made them read as orphaned. */
+  .proof { padding: 0 0 56px; }
+  ul {
+    list-style: none;
+    display: grid;
+    gap: 12px;
+    grid-template-columns: repeat(auto-fit, minmax(min(190px, 100%), 1fr));
+  }
+  li {
+    display: grid;
+    gap: 3px;
+    align-content: start;
+    padding: 16px 18px;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-card);
+  }
+  .k {
+    font-family: var(--font-mono, ui-monospace, monospace);
+    font-size: 0.68rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--primary);
+  }
+  .v { font-weight: 600; font-size: 0.98rem; }
+  .note { color: var(--muted-foreground); font-size: 0.86rem; line-height: 1.5; }
+</style>

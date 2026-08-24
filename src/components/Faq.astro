@@ -6,7 +6,7 @@ import { FAQ } from '../lib/faq';
     <h2>Questions people actually ask</h2>
     <div class="items">
       {FAQ.map((item) => (
-        <details class="reveal">
+        <details class="reveal lift">
           <summary>{item.q}</summary>
           <div class="answer">
             {item.a.map((para) => <p set:html={para} />)}

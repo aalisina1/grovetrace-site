@@ -116,3 +116,105 @@
     }
   }
 }
+
+/* ── Interaction states ─────────────────────────────────────────────────── */
+/*
+ * What makes software feel mature is that it answers you. These are the
+ * hover, press and focus responses shared across the page.
+ *
+ * Two rules they all follow:
+ *   - Every hover state has a matching :focus-visible state. A page that is
+ *     only good with a mouse is not a well-built one, and keyboard operability
+ *     is something regulated-procurement buyers genuinely check.
+ *   - Transitions are on transform/opacity/colour only, never on layout
+ *     properties, so nothing here can cause a reflow while someone reads.
+ */
+
+@media (prefers-reduced-motion: no-preference) {
+  .lift,
+  .press,
+  .u-link {
+    transition:
+      transform 160ms var(--ease-out-soft),
+      box-shadow 220ms var(--ease-out-soft),
+      border-color 220ms var(--ease-out-soft),
+      background-color 160ms var(--ease-out-soft),
+      color 160ms var(--ease-out-soft);
+  }
+}
+
+/* Cards and figures rise slightly and warm their border. */
+.lift:hover,
+.lift:focus-within {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, var(--primary) 40%, var(--border));
+  box-shadow:
+    0 2px 4px rgba(11, 29, 28, 0.05),
+    0 28px 56px -30px rgba(11, 29, 28, 0.42);
+}
+
+/* Buttons acknowledge the press itself, not just the hover. */
+.press:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 20px -10px color-mix(in srgb, var(--primary) 70%, transparent);
+}
+.press:active {
+  transform: translateY(1px);
+  box-shadow: none;
+}
+
+/* An underline that draws in from the left rather than snapping on. */
+.u-link {
+  position: relative;
+  text-decoration: none;
+}
+.u-link::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -3px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 200ms var(--ease-out-soft);
+}
+.u-link:hover::after,
+.u-link:focus-visible::after {
+  transform: scaleX(1);
+}
+@media (prefers-reduced-motion: reduce) {
+  /* Still show the affordance, just without the sweep. */
+  .u-link:hover::after,
+  .u-link:focus-visible::after {
+    transition: none;
+  }
+}
+
+/*
+ * One focus ring for the whole site. Uses :focus-visible so it appears for
+ * keyboard users without boxing every mouse click.
+ */
+a:focus-visible,
+button:focus-visible,
+summary:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* "See how it works" should glide to the section rather than teleport. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+/* The sticky nav would otherwise cover the heading it just scrolled to. */
+:target,
+[id] {
+  scroll-margin-top: 88px;
+}
