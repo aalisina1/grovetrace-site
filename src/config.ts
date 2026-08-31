@@ -7,12 +7,15 @@ export const SITE = {
 } as const;
 
 /**
- * The product app's origin, e.g. 'https://app.grovetrace.com'.
- * Intentionally undefined until the app is actually deployed — a `Log in`
- * link that 404s in front of a prospect is worse than no link at all.
- * Setting this string is the entire "turn on login" change.
+ * The product app's origin.
+ *
+ * Held at `undefined` until the app was actually deployed — a `Log in` link
+ * that 404s in front of a prospect is worse than no link at all. Turned on
+ * 2026-08-31, once app.grovetrace.com was serving over TLS and the full login
+ * path was verified end to end: /login returns 200, and authenticating as a
+ * seeded user through the deployed API returns tokens and org-scoped data.
  */
-export const APP_URL: string | undefined = undefined;
+export const APP_URL: string | undefined = 'https://app.grovetrace.com';
 
 /** Cal.com event link, as `user/event-type`. */
 export const CAL_LINK = 'ali-ahmadi-yp5bv1/grovetrace-demo';
