@@ -44,7 +44,7 @@ const facts = [
     <ul>
       {facts.map((f) => (
         <li class="lift reveal">
-          <span class="k">{f.k}</span>
+          <span class="eyebrow">{f.k}</span>
           <span class="v">{f.v}</span>
           <span class="note">{f.note}</span>
         </li>
@@ -54,33 +54,36 @@ const facts = [
 </section>
 
 <style>
-  /* No top padding: the preceding band already ends with 56px, and these
-     cards are evidence for the claim it just made rather than a separate
-     section. The extra 40px made them read as orphaned. */
-  .proof { padding: 0 0 56px; }
+  /* No top padding: the preceding band already ends with --section-y, and
+     these cards are evidence for the claim it just made rather than a separate
+     section. They share its surface for the same reason. */
+  .proof { padding: 0 0 var(--section-y); }
   ul {
     list-style: none;
     display: grid;
     gap: 12px;
-    grid-template-columns: repeat(auto-fit, minmax(min(190px, 100%), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(196px, 100%), 1fr));
   }
   li {
     display: grid;
-    gap: 3px;
+    gap: 6px;
     align-content: start;
-    padding: 16px 18px;
+    padding: 20px 20px 18px;
     background: var(--card);
     border: 1px solid var(--border);
     border-radius: var(--radius);
     box-shadow: var(--shadow-card);
   }
-  .k {
-    font-family: var(--font-mono, ui-monospace, monospace);
-    font-size: 0.68rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--primary);
+  /* The label was the loud element and the value was body-weight, so the card
+     had nothing to land on. The value now carries the display face at roughly
+     twice body size, which is what makes a stat card read as a stat. */
+  li .eyebrow { margin-bottom: 0; }
+  .v {
+    font-family: var(--font-display);
+    font-size: clamp(1.2rem, 1.9vw, 1.45rem);
+    font-weight: 600;
+    line-height: 1.15;
+    letter-spacing: -0.015em;
   }
-  .v { font-weight: 600; font-size: 0.98rem; }
   .note { color: var(--muted-foreground); font-size: 0.86rem; line-height: 1.5; }
 </style>

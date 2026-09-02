@@ -1,12 +1,20 @@
 ---
+import Topo from './Topo.astro';
+
 /**
  * The home page's booking prompt. Deliberately a link, not the embed: putting
  * Cal's inline widget here would load a third-party script and its cookies for
  * every visitor to the front page, including everyone who never books.
+ *
+ * It closes the page on the same deep surface the hero opens it on, so the ask
+ * is the visual terminus rather than one more cream section.
  */
 ---
-<section class="cta-band" id="demo">
-  <div class="wrap inner reveal">
+<section class="cta-band band-deep" id="demo">
+  <Topo id="topo-cta" />
+  <div class="wrap">
+    <div class="inner reveal">
+    <span class="eyebrow">Next step</span>
     <h2>See it on your own supply chain</h2>
     <p>
       Twenty minutes, screen shared. Bring the part of your data that worries
@@ -18,21 +26,26 @@
       Taking one design partner before December. Twelve weeks, and the test is
       whether your compliance officer produces a statement that is accepted.
     </p>
+    </div>
   </div>
 </section>
 
 <style>
-  .cta-band { padding: 64px 0; border-top: 1px solid var(--border); }
+  .cta-band { position: relative; overflow: hidden; padding: var(--section-y) 0; }
+  /* Above the texture. The constraint sits on this child rather than on
+     .wrap, so the block starts at the same left edge as every other section
+     instead of re-centring itself inside the page. */
+  .wrap { position: relative; z-index: 1; }
   .inner { max-width: 62ch; }
-  h2 { font-size: 1.6rem; margin-bottom: 12px; }
-  p { color: var(--muted-foreground); }
+  h2 { color: #fff; margin-bottom: 12px; }
+  p { color: var(--on-deep-muted); }
   .cta {
-    display: inline-block; margin-top: 22px; background: var(--primary);
-    color: #fff; text-decoration: none; padding: 13px 28px;
+    display: inline-block; margin-top: 24px; background: var(--emerald);
+    color: #0B1D1C; text-decoration: none; padding: 14px 30px;
     border-radius: 8px; font-weight: 600;
   }
   .note {
-    margin-top: 18px; font-size: 0.92rem;
-    border-left: 3px solid var(--primary); padding-left: 14px;
+    margin-top: 20px; font-size: 0.92rem;
+    border-left: 3px solid var(--accent); padding-left: 14px;
   }
 </style>

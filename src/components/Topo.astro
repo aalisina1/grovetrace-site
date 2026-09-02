@@ -1,0 +1,32 @@
+---
+/**
+ * The contour texture behind a deep band. Extracted from Hero so the closing
+ * CTA band can bookend it: two copies in one document need two pattern ids,
+ * and a duplicate id would make the second <rect> paint the first's pattern.
+ */
+interface Props {
+  /** Unique per instance — it becomes the SVG pattern's id. */
+  id: string;
+  /** Only the hero pans; a second moving layer at the foot of the page is noise. */
+  drift?: boolean;
+}
+const { id, drift = false } = Astro.props;
+---
+<svg class:list={['topo', drift && 'topo-drift']} aria-hidden="true"
+     xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id={id} width="120" height="120" patternUnits="userSpaceOnUse">
+      <path d="M0 60 Q30 30 60 60 Q90 90 120 60" stroke="white" fill="none" stroke-width="0.5"/>
+      <path d="M0 30 Q30 0 60 30 Q90 60 120 30" stroke="white" fill="none" stroke-width="0.5"/>
+      <path d="M0 90 Q30 60 60 90 Q90 120 120 90" stroke="white" fill="none" stroke-width="0.5"/>
+    </pattern>
+  </defs>
+  <rect width="100%" height="100%" fill={`url(#${id})`}/>
+</svg>
+
+<style>
+  /* Oversized and offset so the one-tile drift in motion.css never exposes an
+     edge; the containing band clips the overflow. */
+  .topo { position: absolute; top: -140px; left: -140px;
+          width: calc(100% + 280px); height: calc(100% + 280px); opacity: 0.06; }
+</style>

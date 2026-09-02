@@ -1,20 +1,13 @@
 ---
 import Countdown from './Countdown.astro';
+import Topo from './Topo.astro';
 ---
-<section class="hero">
+<section class="hero band-deep">
   <div class="glow hero-glow" aria-hidden="true"></div>
-  <svg class="topo topo-drift" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <pattern id="topo" width="120" height="120" patternUnits="userSpaceOnUse">
-        <path d="M0 60 Q30 30 60 60 Q90 90 120 60" stroke="white" fill="none" stroke-width="0.5"/>
-        <path d="M0 30 Q30 0 60 30 Q90 60 120 30" stroke="white" fill="none" stroke-width="0.5"/>
-        <path d="M0 90 Q30 60 60 90 Q90 120 120 90" stroke="white" fill="none" stroke-width="0.5"/>
-      </pattern>
-    </defs>
-    <rect width="100%" height="100%" fill="url(#topo)"/>
-  </svg>
+  <Topo id="topo-hero" drift />
 
   <div class="wrap inner">
+    <p class="eyebrow">EUDR compliance software</p>
     <h1>Be EUDR-ready <em>before</em> the deadline, not during it.</h1>
     <p class="lede">
       From 30 December 2026, every shipment of cocoa placed on the EU market
@@ -31,24 +24,23 @@ import Countdown from './Countdown.astro';
 </section>
 
 <style>
+  /* Keeps its own gradient rather than .band-deep's: the hero climbs further
+     into the primary green than the closing band, which stays near-black so
+     the two read as a pair without being the same picture. */
   .hero { position: relative; overflow: hidden; background: var(--hero-gradient);
-          color: #E8ECE9; padding: 72px 0 140px; }
-  /* Oversized and offset so the one-tile drift in motion.css never exposes
-     an edge; the hero clips the overflow. */
-  .topo { position: absolute; top: -140px; left: -140px;
-          width: calc(100% + 280px); height: calc(100% + 280px); opacity: 0.06; }
+          color: var(--on-deep); padding: 72px 0 140px; }
   .glow { position: absolute; top: -30%; left: 8%; width: 70%; height: 150%;
           background: radial-gradient(closest-side,
-                      rgba(52, 211, 153, 0.22), rgba(52, 211, 153, 0) 70%);
+                      rgba(59, 206, 170, 0.22), rgba(59, 206, 170, 0) 70%);
           opacity: 0.4; pointer-events: none; }
   .inner { position: relative; z-index: 1; }
   h1 { font-size: clamp(2.1rem, 5.5vw, 3.4rem); max-width: 21ch; color: #fff; }
   h1 em { font-style: italic; color: var(--emerald); }
-  .lede { margin: 22px 0 30px; font-size: 1.13rem; color: rgba(232,236,233,0.75);
+  .lede { margin: 22px 0 30px; font-size: 1.13rem; color: var(--on-deep-muted);
           max-width: 58ch; }
   .ctas { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 26px; }
   .cta { background: var(--emerald); color: #0B1D1C; text-decoration: none;
          padding: 13px 26px; border-radius: 8px; font-weight: 600; }
-  .ghost { color: #E8ECE9; text-decoration: none; padding: 13px 20px;
-           border: 1px solid rgba(255,255,255,0.22); border-radius: 8px; }
+  .ghost { color: var(--on-deep); text-decoration: none; padding: 13px 20px;
+           border: 1px solid var(--on-deep-border); border-radius: 8px; }
 </style>
