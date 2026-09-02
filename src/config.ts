@@ -19,6 +19,3 @@ export const APP_URL: string | undefined = 'https://app.grovetrace.com';
 
 /** Cal.com event link, as `user/event-type`. */
 export const CAL_LINK = 'ali-ahmadi-yp5bv1/grovetrace-demo';
-
-/** EUDR application date for medium and large operators (verified 2026-08-16). */
-export const EUDR_DEADLINE = '2026-12-30';

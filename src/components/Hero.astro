@@ -1,5 +1,4 @@
 ---
-import Countdown from './Countdown.astro';
 import Topo from './Topo.astro';
 ---
 <section class="hero band-deep">
@@ -7,19 +6,19 @@ import Topo from './Topo.astro';
   <Topo id="topo-hero" drift />
 
   <div class="wrap inner">
-    <p class="eyebrow">EUDR compliance software</p>
-    <h1>Be EUDR-ready <em>before</em> the deadline, not during it.</h1>
+    <p class="eyebrow">Origin data to filed DDS</p>
+    <h1>EUDR compliance that starts where your plot data <em>actually lives</em>.</h1>
     <p class="lede">
-      From 30 December 2026, every shipment of cocoa placed on the EU market
-      needs a Due Diligence Statement in TRACES, traced to the plot of land it
-      grew on. Grovetrace is built for cocoa first, and for the six other EUDR
-      commodities that work the same way.
+      Grovetrace pulls supplier and plot data out of the ERPs, farm-data tools
+      and co-op spreadsheets it's stuck in, and ties every cocoa batch to the
+      land it grew on. That becomes the Due Diligence Statement every shipment
+      needs in TRACES from 30 December 2026. Built for cocoa first, and for the
+      six other EUDR commodities that work the same way.
     </p>
     <div class="ctas">
       <a class="cta press" href="/demo/">Book a demo</a>
       <a class="ghost press" href="#how-it-works">See how it works</a>
     </div>
-    <div><Countdown /></div>
   </div>
 </section>
 
@@ -28,17 +27,17 @@ import Topo from './Topo.astro';
      into the primary green than the closing band, which stays near-black so
      the two read as a pair without being the same picture. */
   .hero { position: relative; overflow: hidden; background: var(--hero-gradient);
-          color: var(--on-deep); padding: 72px 0 140px; }
+          color: var(--on-deep); padding: 80px 0 96px; }
   .glow { position: absolute; top: -30%; left: 8%; width: 70%; height: 150%;
           background: radial-gradient(closest-side,
                       rgba(59, 206, 170, 0.22), rgba(59, 206, 170, 0) 70%);
           opacity: 0.4; pointer-events: none; }
   .inner { position: relative; z-index: 1; }
-  h1 { font-size: clamp(2.1rem, 5.5vw, 3.4rem); max-width: 21ch; color: #fff; }
+  h1 { font-size: clamp(2.1rem, 5.5vw, 3.4rem); max-width: 24ch; color: #fff; }
   h1 em { font-style: italic; color: var(--emerald); }
   .lede { margin: 22px 0 30px; font-size: 1.13rem; color: var(--on-deep-muted);
           max-width: 58ch; }
-  .ctas { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 26px; }
+  .ctas { display: flex; gap: 14px; flex-wrap: wrap; }
   .cta { background: var(--emerald); color: #0B1D1C; text-decoration: none;
          padding: 13px 26px; border-radius: 8px; font-weight: 600; }
   .ghost { color: var(--on-deep); text-decoration: none; padding: 13px 20px;
