@@ -1,8 +1,10 @@
 ---
 import { FAQ } from '../lib/faq';
 ---
-<section class="faq" id="faq">
-  <div class="wrap inner">
+<section class="faq band-alt" id="faq">
+  <div class="wrap">
+    <div class="inner">
+    <span class="eyebrow">FAQ</span>
     <h2>Questions people actually ask</h2>
     <div class="items">
       {FAQ.map((item) => (
@@ -14,11 +16,12 @@ import { FAQ } from '../lib/faq';
         </details>
       ))}
     </div>
+    </div>
   </div>
 </section>
 
 <style>
-  .faq { padding: 64px 0; border-top: 1px solid var(--border); }
+  .faq { padding: var(--section-y) 0; }
   .inner { max-width: 76ch; }
   .items { margin-top: 24px; display: grid; gap: 10px; }
 

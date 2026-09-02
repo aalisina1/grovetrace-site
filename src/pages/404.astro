@@ -34,7 +34,7 @@ import { SITE } from '../config';
 </Base>
 
 <style>
-  .nf { padding: 88px 0 104px; }
+  .nf { padding: var(--section-y) 0 104px; }
   .inner { max-width: 56ch; }
   .code {
     font-family: var(--font-mono, ui-monospace, monospace);
@@ -45,7 +45,8 @@ import { SITE } from '../config';
   .lede { color: var(--muted-foreground); margin-bottom: 26px; }
   .ctas { display: flex; gap: 12px; flex-wrap: wrap; }
   .cta {
-    background: var(--primary); color: #fff; text-decoration: none;
+    background: var(--primary-strong); color: var(--primary-foreground);
+    text-decoration: none;
     padding: 12px 24px; border-radius: 8px; font-weight: 600;
   }
   .ghost {

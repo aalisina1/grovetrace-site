@@ -44,8 +44,9 @@ const steps = [
   },
 ];
 ---
-<section class="how" id="how-it-works">
+<section class="how band-alt" id="how-it-works">
   <div class="wrap">
+    <span class="eyebrow">The workflow</span>
     <h2>How it works</h2>
     <p class="intro prose">
       The filing is a form. The hard part is everything upstream of it, which is
@@ -86,8 +87,8 @@ const steps = [
 </section>
 
 <style>
-  .how { padding: 64px 0; border-top: 1px solid var(--border); }
-  .intro { color: var(--muted-foreground); margin-bottom: 44px; max-width: 60ch; }
+  .how { padding: var(--section-y) 0; }
+  .intro { color: var(--muted-foreground); margin: 14px 0 48px; max-width: 60ch; }
 
   .step {
     display: grid;
@@ -106,7 +107,7 @@ const steps = [
     letter-spacing: 0.08em;
     color: var(--primary);
   }
-  h3 { font-size: 1.25rem; margin: 6px 0 10px; }
+  h3 { font-size: 1.3rem; margin: 6px 0 10px; }
   .copy p { color: var(--muted-foreground); }
 
   figure {

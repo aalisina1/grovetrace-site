@@ -90,7 +90,7 @@ import { organizationLd } from '../lib/jsonld';
 </Base>
 
 <style>
-  .privacy { padding: 56px 0 72px; }
+  .privacy { padding: var(--section-y) 0 72px; }
   .inner { max-width: 68ch; }
   h1 { font-size: clamp(1.9rem, 4vw, 2.5rem); margin-bottom: 6px; }
   .updated { color: var(--muted-foreground); font-size: 0.9rem; margin-bottom: 28px; }
@@ -98,5 +98,8 @@ import { organizationLd } from '../lib/jsonld';
   .prose p, .prose li { color: var(--muted-foreground); }
   .prose p + p { margin-top: 12px; }
   .prose strong { color: var(--foreground); }
+  /* Was unstyled, so it fell back to the browser's #0000EE — 2.0:1 on the
+     dark theme's background, and off-brand on the light one. */
+  .prose a { color: var(--primary); }
   ul { padding-left: 1.1rem; display: grid; gap: 8px; margin-top: 8px; }
 </style>
